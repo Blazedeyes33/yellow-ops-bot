@@ -45,7 +45,7 @@ def loop():
         if now == "00:01":
             sent_today = {"10:00": False, "22:00": False}
 
-        if now == "10:00" and not sent_today["10:00"]:
+        if now == "14:45" and not sent_today["10:00"]:
             send_message("📈 *Morning Focus*\n- Review trade idea\n- Post update\n- Save ₹500\n- Make today count.")
             sent_today["10:00"] = True
 
