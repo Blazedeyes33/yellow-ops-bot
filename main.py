@@ -49,26 +49,46 @@ def send_message(text):
 # --- Notion Task Fetcher ---
 def fetch_notion_tasks():
     url = f"https://api.notion.com/v1/databases/{NOTION_DB_ID}/query"
-    response = requests.post(url, headers=NOTION_HEADERS)
+
+    # Get today's date in YYYY-MM-DD format
+    ist = pytz.timezone('Asia/Kolkata')
+    today = datetime.now(ist).date().isoformat()
+
+    query = {
+        "filter": {
+            "property": "Due Date",
+            "date": {
+                "equals": today
+            }
+        }
+    }
+
+    response = requests.post(url, headers=NOTION_HEADERS, json=query)
 
     if response.status_code != 200:
         print("Failed to fetch Notion tasks:", response.text)
         return "⚠️ Couldn't fetch tasks from Notion."
 
     data = response.json()
-    items = []
+    results = data.get("results", [])
+    if not results:
+        return "✅ No tasks scheduled for today. You're clear!"
 
-    for result in data.get("results", []):
-        props = result.get("properties", {})
-        task_title = props.get("Name", {}).get("title", [])
-        if task_title:
-            text = task_title[0].get("text", {}).get("content", "")
-            items.append(f"- [ ] {text}")
+    # Parse the first row (today's tasks)
+    props = results[0]["properties"]
+    trade = props.get("Trade", {}).get("rich_text", [{}])[0].get("text", {}).get("content", "")
+    content = props.get("Content", {}).get("rich_text", [{}])[0].get("text", {}).get("content", "")
+    save = props.get("Save", {}).get("rich_text", [{}])[0].get("text", {}).get("content", "")
+    repay = props.get("Debt Repay", {}).get("rich_text", [{}])[0].get("text", {}).get("content", "")
+    review = props.get("Review", {}).get("rich_text", [{}])[0].get("text", {}).get("content", "")
 
-    if not items:
-        return "✅ No tasks found today — you're clear."
-
-    return "*📈 Morning Focus (From Notion)*\n" + "\n".join(items)
+    return f"""📈 *Morning Focus — {today}*
+- Trade: {trade}
+- Content: {content}
+- Save: {save}
+- Debt Repay: {repay}
+- Review: {review}
+"""
 
 # --- Bot Logic with IST ---
 def loop():
