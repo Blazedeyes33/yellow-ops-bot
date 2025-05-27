@@ -6,12 +6,21 @@ from datetime import datetime
 from flask import Flask
 from threading import Thread
 
-# --- Flask app to keep Railway container alive ---
+# --- Notion API Setup ---
+NOTION_TOKEN = os.getenv("NOTION_TOKEN")
+NOTION_DB_ID = os.getenv("NOTION_DB_ID")
+NOTION_HEADERS = {
+    "Authorization": f"Bearer {NOTION_TOKEN}",
+    "Notion-Version": "2022-06-28",
+    "Content-Type": "application/json"
+}
+
+# --- Flask Keep-Alive ---
 app = Flask('')
 
 @app.route('/')
 def home():
-    return "Yellow Ops Bot is running (IST Timezone)"
+    return "Yellow Ops Notion Bot is running (IST Time)"
 
 def run():
     app.run(host='0.0.0.0', port=8080)
@@ -33,11 +42,35 @@ def send_message(text):
     }
     try:
         response = requests.post(url, data=data)
-        print("Sent:", response.text)  # Log Telegram's API response
+        print("Telegram response:", response.text)
     except Exception as e:
-        print("Error sending message:", e)
+        print("Error sending Telegram message:", e)
 
-# --- Ping Logic with IST Timezone ---
+# --- Notion Task Fetcher ---
+def fetch_notion_tasks():
+    url = f"https://api.notion.com/v1/databases/{NOTION_DB_ID}/query"
+    response = requests.post(url, headers=NOTION_HEADERS)
+
+    if response.status_code != 200:
+        print("Failed to fetch Notion tasks:", response.text)
+        return "⚠️ Couldn't fetch tasks from Notion."
+
+    data = response.json()
+    items = []
+
+    for result in data.get("results", []):
+        props = result.get("properties", {})
+        task_title = props.get("Name", {}).get("title", [])
+        if task_title:
+            text = task_title[0].get("text", {}).get("content", "")
+            items.append(f"- [ ] {text}")
+
+    if not items:
+        return "✅ No tasks found today — you're clear."
+
+    return "*📈 Morning Focus (From Notion)*\n" + "\n".join(items)
+
+# --- Bot Logic with IST ---
 def loop():
     sent_today = {"10:00": False, "22:00": False}
     ist = pytz.timezone('Asia/Kolkata')
@@ -45,12 +78,12 @@ def loop():
     while True:
         now = datetime.now(ist).strftime("%H:%M")
 
-        # Reset flags at 00:01
         if now == "00:01":
             sent_today = {"10:00": False, "22:00": False}
 
         if now == "10:00" and not sent_today["10:00"]:
-            send_message("📈 *Morning Focus*\n- Review 1 trade idea\n- Post content (YT/TG)\n- Save ₹500\n- Progress = Freedom")
+            notion_tasks = fetch_notion_tasks()
+            send_message(notion_tasks)
             sent_today["10:00"] = True
 
         if now == "22:00" and not sent_today["22:00"]:
@@ -59,7 +92,8 @@ def loop():
 
         time.sleep(60)
 
-# --- Start Everything ---
+# --- Start Bot ---
 keep_alive()
 loop()
+
 
