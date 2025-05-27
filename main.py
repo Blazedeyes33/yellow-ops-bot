@@ -101,7 +101,7 @@ def loop():
         if now == "00:01":
             sent_today = {"10:00": False, "22:00": False}
 
-        if not sent_today["9:00"]:
+        if not sent_today["10:00"]:
             notion_tasks = fetch_notion_tasks()
             send_message(notion_tasks)
             sent_today["10:00"] = True
