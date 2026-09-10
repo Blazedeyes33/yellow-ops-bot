@@ -2,11 +2,19 @@ package com.bachke.goa;
 
 /* loaded from: classes.dex */
 public final class Camera3D {
+    /** Fraction of the runner's lateral position the camera follows; keeps the runner framed at the street edges. */
+    public static final double FOLLOW = 0.6d;
+
     public static float[] matrix(double d, boolean z) {
-        double d2 = z ? 1.5d : 0.0d;
+        return matrix(d, z, 0.0d);
+    }
+
+    public static float[] matrix(double d, boolean z, double runnerX) {
+        double follow = z ? 0.0d : FOLLOW * runnerX;
+        double d2 = (z ? 1.5d : 0.0d) + follow;
         double d3 = z ? 3.1d : 4.3d;
         double d4 = z ? 8.0d : 10.5d;
-        double d5 = d2 - 0.0d;
+        double d5 = d2 - follow;
         double d6 = d3 - (z ? 1.4d : 1.3d);
         double d7 = d4 - (z ? 0.0d : -18.0d);
         double sqrt = Math.sqrt((d5 * d5) + (d6 * d6) + (d7 * d7));

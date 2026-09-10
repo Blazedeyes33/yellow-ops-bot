@@ -145,7 +145,7 @@ public final class GlRenderer3D implements GLSurfaceView.Renderer {
             float f4 = f == 1.0f ? 0.24f : 0.83f;
             GLES20.glClearColor(f2, f3, f4, 1.0f);
             GLES20.glClear(16640);
-            float[] cameraMatrix = Camera3D.matrix((double) this.width / this.height, z);
+            float[] cameraMatrix = Camera3D.matrix((double) this.width / this.height, z, z ? 0.0d : this.core.renderX());
             if (this.backdrop != null) {
                 this.backdrop.draw(route, cameraMatrix, this.ui.night, z ? this.ui.ambience * 0.6d : this.core.renderDistance(), f2, f3, f4);
             }

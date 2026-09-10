@@ -45,7 +45,23 @@ public final class Stage3D {
                     int r12 = z3 ? 1 : 0;
                     mesh3D.shadow(worldX, d8, 0.8d, hazard.depth() / 2.0d);
                     int i2 = -1;
-                    if (hazard.crossing) {
+                    if (hazard.kind == RunnerCore.Kind.SCOOTER) {
+                        d4 = d5;
+                        double dir = Math.signum(hazard.velocity == 0.0d ? 1.0d : hazard.velocity);
+                        mesh3D.yaw = dir > 0 ? -1.5707963267948966d : 1.5707963267948966d;
+                        mesh3D.ox = worldX; mesh3D.oz = d8; mesh3D.oy = 0.0d;
+                        mesh3D.box(0.0d, 0.55d, 0.0d, 0.5d, 0.35d, 1.5d, 15168086);      // body
+                        mesh3D.box(0.0d, 0.30d, 0.0d, 0.42d, 0.28d, 1.1d, 3166820);       // engine/chassis
+                        mesh3D.rod(0.0d, 0.32d, 0.72d, 0.0d, 0.32d, 0.72d, 0.30d, 0.30d, 2504256);  // wheels (discs)
+                        mesh3D.ellipsoid(0.0d, 0.32d, 0.72d, 0.12d, 0.32d, 0.32d, 2504256);
+                        mesh3D.ellipsoid(0.0d, 0.32d, -0.62d, 0.12d, 0.32d, 0.32d, 2504256);
+                        mesh3D.rod(0.0d, 0.7d, 0.55d, 0.0d, 1.15d, 0.75d, 0.03d, 0.03d, 3562592);   // steering column
+                        mesh3D.box(0.0d, 1.15d, 0.75d, 0.62d, 0.04d, 0.08d, 3562592);     // handlebar
+                        mesh3D.box(0.0d, 0.98d, 0.85d, 0.36d, 0.32d, 0.10d, 16769958);    // headlamp/front shield
+                        mesh3D.ellipsoid(0.0d, 0.95d, -0.05d, 0.26d, 0.30d, 0.26d, 15300438); // rider torso
+                        mesh3D.ellipsoid(0.0d, 1.42d, -0.05d, 0.17d, 0.19d, 0.17d, 13209681); // helmet
+                        mesh3D.yaw = 0.0d; mesh3D.ox = 0.0d; mesh3D.oz = 0.0d; mesh3D.oy = 0.0d;
+                    } else if (hazard.crossing && hazard.velocity != 0.0d) {
                         d4 = d5;
                         mesh3D.box(worldX, 0.8d, d8, 1.4d, 0.7d, 1.0d, 2402720);
                         mesh3D.box(worldX, 1.18d, d8, 1.5d, 0.12d, 1.1d, 15976315);
@@ -113,7 +129,7 @@ public final class Stage3D {
             d3 = d5;
             for (RunnerCore.Coin coin : runnerCore.coins) {
                 if (coin.z >= -9.0d && coin.z <= 105.0d) {
-                    mesh3D.ox = coin.lane * 2.25d;
+                    mesh3D.ox = coin.worldX();
                     mesh3D.oy = coin.y;
                     mesh3D.oz = -coin.z;
                     mesh3D.yaw = 2.3d * d;

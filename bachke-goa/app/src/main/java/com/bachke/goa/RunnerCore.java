@@ -65,7 +65,8 @@ public final class RunnerCore {
         CRATE,
         BARRIER,
         VAN,
-        GAP
+        GAP,
+        SCOOTER
     }
 
     public static final class Hazard {
@@ -92,6 +93,9 @@ public final class RunnerCore {
             if (this.kind == Kind.VAN) {
                 return 3.8d;
             }
+            if (this.kind == Kind.SCOOTER) {
+                return 1.6d;
+            }
             return this.kind == Kind.GAP ? 2.4d : 1.0d;
         }
     }
@@ -100,11 +104,17 @@ public final class RunnerCore {
         public final int lane;
         public final double y;
         public double z;
+        /** Lateral position in street mode; NaN means use lane * LANE. */
+        public double streetX = Double.NaN;
 
         Coin(int i, double d, double d2) {
             this.lane = i;
             this.y = d;
             this.z = d2;
+        }
+
+        public double worldX() {
+            return Double.isNaN(this.streetX) ? this.lane * 2.25d : this.streetX;
         }
     }
 
@@ -326,7 +336,13 @@ public final class RunnerCore {
             if (z3) {
                 hazard.closest = Math.min(hazard.closest, abs);
             }
-            if (hazard.kind != Kind.CRATE ? hazard.kind != Kind.BARRIER ? hazard.kind != Kind.GAP || this.y < 0.2d : !sliding() : this.y < 1.0d) {
+            if (hazard.kind == Kind.CRATE) {
+                z = this.y < 1.0d;
+            } else if (hazard.kind == Kind.BARRIER) {
+                z = !sliding();
+            } else if (hazard.kind == Kind.GAP) {
+                z = this.y < 0.2d;
+            } else {
                 z = true;
             }
             if (z2 && z3 && z) {
@@ -362,7 +378,7 @@ public final class RunnerCore {
         for (int size2 = this.coins.size() - 1; size2 >= 0; size2--) {
             Coin coin = this.coins.get(size2);
             coin.z -= speed;
-            if (Math.abs(coin.z) < 0.6d && Math.abs(this.x - (coin.lane * 2.25d)) < 0.65d && Math.abs((this.y + 0.95d) - coin.y) < 1.0d) {
+            if (Math.abs(coin.z) < 0.6d && Math.abs(this.x - coin.worldX()) < 0.65d && Math.abs((this.y + 0.95d) - coin.y) < 1.0d) {
                 this.coins.remove(size2);
                 this.collected++;
                 this.bonus += this.combo * 25;
@@ -373,15 +389,54 @@ public final class RunnerCore {
         }
     }
 
-    private void spawn() {
-        if (this.streetMode) {
-            Hazard hazard = new Hazard(Kind.CRATE, 0, FIRST_CART_DISTANCE);
+    /**
+     * Street encounters. Level 1: crossing carts only. Level 2 adds a static crate stack to jump.
+     * Level 3 adds a low barrier to slide under. Level 4+ adds a fast scooter and, later, paired encounters.
+     * Every row leaves a reachable escape: static obstacles never block more than one third of the street.
+     */
+    private void spawnStreet() {
+        int level = level();
+        int roll = this.random.nextInt(10);
+        boolean scooter = level >= 4 && roll < 3;
+        boolean crate = !scooter && level >= 2 && roll >= 3 && roll < 5;
+        boolean barrier = !scooter && !crate && level >= 3 && roll >= 5 && roll < 7;
+        if (crate || barrier) {
+            // static obstacle offset to one side, plus a small coin lure on the open side
+            double side = this.random.nextBoolean() ? 1.0d : -1.0d;
+            Hazard h = new Hazard(crate ? Kind.CRATE : Kind.BARRIER, 0, FIRST_CART_DISTANCE + 6.0d);
+            h.crossing = true; h.velocity = 0.0d; h.streetX = side * 1.4d;
+            this.hazards.add(h);
+            for (int i = 0; i < 3; i++) this.coins.add(new Coin(0, 1.05d, FIRST_CART_DISTANCE + 4.0d + i * 2.2d));
+            fixCoinX(-side * 2.2d, 3);
+        } else {
+            Hazard hazard = new Hazard(scooter ? Kind.SCOOTER : Kind.CRATE, 0, FIRST_CART_DISTANCE);
             hazard.crossing = true;
             hazard.streetX = this.rows % 2 == 0 ? -3.1d : 3.1d;
-            hazard.velocity = (this.rows % 2 == 0 ? 1 : -1) * cartSpeed();
+            double v = scooter ? cartSpeed() * 1.9d : cartSpeed();
+            hazard.velocity = (this.rows % 2 == 0 ? 1 : -1) * v;
             this.hazards.add(hazard);
-            this.rows++;
-            this.nextRow = this.time + cartInterval();
+            if (level >= 6 && this.random.nextInt(3) == 0) {
+                // paired: a second cart from the other side, staggered so a gap always exists
+                Hazard second = new Hazard(Kind.CRATE, 0, FIRST_CART_DISTANCE + 9.0d);
+                second.crossing = true; second.streetX = -hazard.streetX; second.velocity = -Math.signum(hazard.velocity) * cartSpeed();
+                this.hazards.add(second);
+            }
+        }
+        this.rows++;
+        this.nextRow = this.time + cartInterval();
+    }
+
+    /** Coins are stored by lane index; in street mode a lure uses lane 0 and a lateral offset applied here. */
+    private void fixCoinX(double x, int count) {
+        for (int i = this.coins.size() - count; i < this.coins.size(); i++) {
+            Coin c = this.coins.get(i);
+            c.streetX = x;
+        }
+    }
+
+    private void spawn() {
+        if (this.streetMode) {
+            spawnStreet();
             return;
         }
         int nextInt = this.random.nextInt(3) - 1;

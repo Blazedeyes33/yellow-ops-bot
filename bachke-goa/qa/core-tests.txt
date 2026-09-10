@@ -44,6 +44,13 @@ ok   passing at 1.0m clearance counts as close call
 ok   wide pass is not a close call
 ok   cleared counter increments
 ok   driver survives all 24 seeded 4-minute street courses (24/24)
+ok   level 1 has crossing carts only (no static before level 2)
+ok   no barrier before level 3
+ok   no scooter before level 4
+ok   no paired carts before level 6
+ok   crates appear by level 3 {CRATE=155, BARRIER=13}
+ok   scooters appear after level 4 {CRATE=160, BARRIER=75, SCOOTER=80}
+ok   static obstacles leave an escape side
 ok   same seed => identical hazards
 ok   60Hz and 165Hz inputs agree on distance (60.0000 vs 60.0000)
 ok   level(0)=1
@@ -51,4 +58,4 @@ ok   level(59.99)=3
 ok   level(60)=4
 ok   five routes cycle
 
-52 passed, 0 failed
+59 passed, 0 failed

@@ -123,11 +123,16 @@ public final class CoreTests {
                 RunnerCore.Hazard threat = null;
                 for (RunnerCore.Hazard hz : c.hazards) if (hz.z > -1.0 && hz.z < 14.0 && (threat == null || hz.z < threat.z)) threat = hz;
                 if (threat != null) {
-                    // predict cart x when it reaches the runner; steer to the far side
+                    // predict obstacle x when it reaches the runner; steer to the far side
                     double eta = Math.max(0, threat.z / c.speed());
                     double px = threat.streetX + threat.velocity * eta;
                     double want = px > 0 ? Math.max(-3.25, px - 2.6) : Math.min(3.25, px + 2.6);
                     c.steer(want - c.targetX);
+                    // static obstacles: also use the vertical move if still overlapping laterally
+                    if (threat.velocity == 0 && Math.abs(c.x - threat.streetX) < 1.0 && threat.z < 5.0 && threat.z > 0.5) {
+                        if (threat.kind == RunnerCore.Kind.CRATE) c.act(RunnerCore.Action.JUMP);
+                        else if (threat.kind == RunnerCore.Kind.BARRIER) c.act(RunnerCore.Action.SLIDE);
+                    }
                 }
                 c.advance(RunnerCore.STEP);
             }
@@ -135,6 +140,38 @@ public final class CoreTests {
             else System.out.println("     seed " + seed + " died at t=" + String.format(Locale.US, "%.2f", c.time) + " level " + c.level());
         }
         check("driver survives all 24 seeded 4-minute street courses (" + survived + "/24)", survived == 24);
+
+        // ---- street encounter gating ----
+        java.util.EnumMap<RunnerCore.Kind, Integer> seenByLevel3 = new java.util.EnumMap<>(RunnerCore.Kind.class);
+        java.util.EnumMap<RunnerCore.Kind, Integer> seenLate = new java.util.EnumMap<>(RunnerCore.Kind.class);
+        boolean staticBefore2 = false, barrierBefore3 = false, scooterBefore4 = false, pairedBefore6 = false;
+        for (long seed = 0; seed < 12; seed++) {
+            c = fresh(true, 100 + seed);
+            java.util.Set<RunnerCore.Hazard> known = new java.util.HashSet<>();
+            for (int step = 0; step < (int) (150 / RunnerCore.STEP); step++) {
+                c.advance(RunnerCore.STEP);
+                if (c.state != GameCore.State.PLAYING) { c.state = GameCore.State.PLAYING; } // observe spawns only
+                for (RunnerCore.Hazard hz : c.hazards) if (known.add(hz)) {
+                    int lvl = c.level();
+                    (lvl <= 3 ? seenByLevel3 : seenLate).merge(hz.kind, 1, Integer::sum);
+                    if (hz.velocity == 0 && lvl < 2) staticBefore2 = true;
+                    if (hz.kind == RunnerCore.Kind.BARRIER && lvl < 3) barrierBefore3 = true;
+                    if (hz.kind == RunnerCore.Kind.SCOOTER && lvl < 4) scooterBefore4 = true;
+                }
+                if (lvlPaired(c) && c.level() < 6) pairedBefore6 = true;
+            }
+        }
+        check("level 1 has crossing carts only (no static before level 2)", !staticBefore2);
+        check("no barrier before level 3", !barrierBefore3);
+        check("no scooter before level 4", !scooterBefore4);
+        check("no paired carts before level 6", !pairedBefore6);
+        check("crates appear by level 3 " + seenByLevel3, seenByLevel3.getOrDefault(RunnerCore.Kind.CRATE, 0) > 0);
+        check("scooters appear after level 4 " + seenLate, seenLate.getOrDefault(RunnerCore.Kind.SCOOTER, 0) > 0 && seenLate.getOrDefault(RunnerCore.Kind.BARRIER, 0) > 0);
+        // static obstacle never blocks the whole street: an escape lane of >= 1.72 m must exist
+        c = fresh(true, 9); boolean escape = true;
+        for (int step = 0; step < (int) (200 / RunnerCore.STEP); step++) { c.advance(RunnerCore.STEP); if (c.state != GameCore.State.PLAYING) c.state = GameCore.State.PLAYING;
+            for (RunnerCore.Hazard hz : c.hazards) if (hz.velocity == 0 && Math.abs(hz.streetX) < 1.0) escape = false; }
+        check("static obstacles leave an escape side", escape);
 
         // ---- determinism ----
         RunnerCore a = fresh(true, 99), b = fresh(true, 99);
@@ -158,5 +195,8 @@ public final class CoreTests {
         System.exit(failed == 0 ? 0 : 1);
     }
 
+    static boolean lvlPaired(RunnerCore c) {
+        int moving = 0; for (RunnerCore.Hazard hz : c.hazards) if (hz.velocity != 0 && hz.z > 20) moving++; return moving >= 2;
+    }
     static boolean advanceChanges(RunnerCore c) { double t = c.time; c.advance(0.1); return c.time != t; }
 }
