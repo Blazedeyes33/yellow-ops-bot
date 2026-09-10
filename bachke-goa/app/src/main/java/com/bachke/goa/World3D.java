@@ -12,6 +12,7 @@ public final class World3D {
         int[] iArr;
         Mesh3D mesh3D;
         Mesh3D mesh3D2 = new Mesh3D();
+        mesh3D2.wind = -1.0f;
         mesh3D2.box(0.0d, -0.22d, -65.0d, 9.0d, 0.4d, 210.0d, 8951190);
         int i3 = -1;
         while (true) {
@@ -26,6 +27,7 @@ public final class World3D {
             mesh3D2.box(i4 * 13, -0.3d, -65.0d, 17.0d, 0.35d, 210.0d, i == 4 ? 15454100 : 9351042);
             i3 = i4 + 2;
         }
+        mesh3D2.wind = 0.0f;
         int i5 = 4;
         int i6 = -6;
         while (i6 < 42) {

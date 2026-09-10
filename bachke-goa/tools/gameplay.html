@@ -1,0 +1,42 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"./three/three.module.js"}}</script></head><body>
+<script type="module">
+window.addEventListener('unhandledrejection',e=>{window.ERR=String(e.reason&&e.reason.stack||e.reason);});
+import * as THREE from 'three';
+// Faithful preview of the Android scene: same vertex streams (World3D/Stage3D), same camera matrix (Camera3D), same lighting formula as Shaders3D.
+const q=new URLSearchParams(location.search); const W=+q.get('w')||540,H=+q.get('h')||1200;
+const night=q.get('night')==='1'; const route=+q.get('route')||0; const backdrop=q.get('backdrop')!=='0';
+const renderer=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true}); renderer.setSize(W,H); renderer.setPixelRatio(1); document.body.appendChild(renderer.domElement);
+const scene=new THREE.Scene(); const fog=night?[0.075,0.13,0.24]:[0.53,0.78,0.83]; scene.background=new THREE.Color(...fog);
+const cam=new THREE.Camera(); cam.matrixAutoUpdate=false;
+async function f32(u){const b=await (await fetch(u)).arrayBuffer(); return new Float32Array(b);}
+const camM=await f32('world/camera.f32'); cam.projectionMatrix.fromArray(camM); cam.projectionMatrixInverse.copy(cam.projectionMatrix).invert();
+const state=Object.fromEntries((await (await fetch('world/state.txt')).text()).trim().split('\n').map(l=>l.split(' ')));
+const dist=+state.distance;
+const vsrc=(await (await fetch('world/world.vert')).text()).replace(/attribute vec3 aPosition;/,'').replace(/attribute vec3 aNormal;/,'').replace(/uniform mat4 uCamera;/,'').replace(/aPosition/g,'position').replace(/aNormal/g,'normal').replace(/uCamera/g,'projectionMatrix');
+const fsrc=await (await fetch('world/world.frag')).text();
+const skyTop=night?[0.02,0.04,0.12]:[0.16,0.42,0.80];
+const mat=new THREE.ShaderMaterial({uniforms:{uOffset:{value:0},uTime:{value:0},uNight:{value:night?1:0},uFog:{value:new THREE.Vector3(...fog)}},vertexShader:vsrc,fragmentShader:fsrc});
+{ // sky gradient
+ const sg=new THREE.PlaneGeometry(2,2); const sm=new THREE.ShaderMaterial({uniforms:{uFog:{value:new THREE.Vector3(...fog)},uSkyTop:{value:new THREE.Vector3(...skyTop)}},depthWrite:false,depthTest:false,
+  vertexShader:`varying float vY; void main(){vY=position.y*0.5+0.5; gl_Position=vec4(position.xy,0.999,1.0);}`,fragmentShader:`precision mediump float; varying float vY; uniform vec3 uFog; uniform vec3 uSkyTop; void main(){float t=smoothstep(0.30,0.95,vY); gl_FragColor=vec4(mix(uFog,uSkyTop,t),1.0);}`});
+ const sky=new THREE.Mesh(sg,sm); sky.frustumCulled=false; sky.renderOrder=-100; scene.add(sky); }
+function meshFrom(arr,offset){const n=arr.length/10; const g=new THREE.BufferGeometry(); const pos=new Float32Array(n*3),nrm=new Float32Array(n*3),col=new Float32Array(n*3),wind=new Float32Array(n);
+ for(let i=0;i<n;i++){pos.set(arr.subarray(i*10,i*10+3),i*3);nrm.set(arr.subarray(i*10+3,i*10+6),i*3);col.set(arr.subarray(i*10+6,i*10+9),i*3);wind[i]=arr[i*10+9];}
+ g.setAttribute('position',new THREE.BufferAttribute(pos,3));g.setAttribute('normal',new THREE.BufferAttribute(nrm,3));g.setAttribute('aColor',new THREE.BufferAttribute(col,3));g.setAttribute('aWind',new THREE.BufferAttribute(wind,1));
+ const m=mat.clone(); m.uniforms.uOffset.value=offset; const mesh=new THREE.Mesh(g,m); mesh.frustumCulled=false; return mesh;}
+scene.add(meshFrom(await f32(`world/world${route}.f32`), dist%28.0));
+scene.add(meshFrom(await f32('world/actors.f32'),0));
+const mode=q.get('mode')||'billboard';
+if(backdrop){const names=['panjim','margao','mapusa','oldgoa','calangute']; const tex=await new THREE.TextureLoader().loadAsync(`world/${names[route]}.png`); tex.colorSpace=THREE.SRGBColorSpace; tex.wrapS=THREE.RepeatWrapping; tex.wrapT=THREE.ClampToEdgeWrapping;
+ const mk=(fogMul,fogNear,fogFar)=>new THREE.ShaderMaterial({uniforms:{uTex:{value:tex},uNightRow:{value:night?0.0:0.5},uScroll:{value:(dist/220.0)%1},uFog:{value:new THREE.Vector3(...fog)},uFogMul:{value:fogMul},uFogNear:{value:fogNear},uFogFar:{value:fogFar},uSkyTop:{value:new THREE.Vector3(...skyTop)}},
+  vertexShader:`varying vec2 vUv; varying float vDepth; void main(){vUv=uv; vec4 wp=modelMatrix*vec4(position,1.0); vDepth=max(0.0,-wp.z); gl_Position=projectionMatrix*wp;}`,
+  fragmentShader:`precision mediump float; varying vec2 vUv; varying float vDepth; uniform sampler2D uTex; uniform float uNightRow; uniform float uScroll; uniform vec3 uFog; uniform float uFogMul,uFogNear,uFogFar; uniform vec3 uSkyTop;
+   void main(){ vec2 uv=vec2(fract(vUv.x+uScroll), uNightRow+clamp(vUv.y,0.0,1.0)*0.5); vec3 c=texture2D(uTex,uv).rgb; float fog=smoothstep(uFogNear,uFogFar,vDepth)*uFogMul; c=mix(c,uFog,fog); float top=smoothstep(0.80,0.99,vUv.y); gl_FragColor=vec4(mix(c,uSkyTop,top),1.0);}`,side:THREE.DoubleSide,depthWrite:false});
+ if(mode==='billboard'||mode==='both'){ // far skyline across the road end: panorama half is 6:1, show 1/2 of its width
+  const BW=+q.get('bw')||150, BH=BW/6; const g=new THREE.PlaneGeometry(BW,BH,1,1); const uv=g.attributes.uv; for(let i=0;i<uv.count;i++){uv.setX(i,uv.getX(i)*0.5);}
+  const m=new THREE.Mesh(g,mk(+q.get('bfog')||0.55,80,150)); m.position.set(0,BH/2-1.0,+q.get('bz')||-135); m.frustumCulled=false; m.renderOrder=-10; scene.add(m);}
+ if(mode==='wall'||mode==='both'){ for(const sx of [-1,1]){const g=new THREE.PlaneGeometry(220,11,1,1); const uv=g.attributes.uv; for(let i=0;i<uv.count;i++){uv.setX(i,uv.getX(i)*3.0); uv.setY(i,uv.getY(i)*0.55);} const m=new THREE.Mesh(g,mk(0.85,60,140)); m.position.set(sx*(+q.get('wx')||24),5.0,-60); m.rotation.y=sx>0?-Math.PI/2:Math.PI/2; m.frustumCulled=false; m.renderOrder=-9; scene.add(m);} }
+}
+window.render=()=>renderer.render(scene,cam); window.render(); window.READY=true;
+</script></body></html>

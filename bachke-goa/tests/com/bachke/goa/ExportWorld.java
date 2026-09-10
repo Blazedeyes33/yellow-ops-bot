@@ -23,6 +23,8 @@ public final class ExportWorld {
         try (DataOutputStream d = new DataOutputStream(new FileOutputStream(outDir + "/state.txt"))) {
             d.writeBytes("renderX " + core.renderX() + "\nrenderY " + core.renderY() + "\ndistance " + core.renderDistance() + "\nroute " + core.route() + "\nspeed " + core.speed() + "\n");
         }
+        try (FileOutputStream f = new FileOutputStream(outDir + "/world.vert")) { f.write(Shaders3D.VERTEX.getBytes("UTF-8")); }
+        try (FileOutputStream f = new FileOutputStream(outDir + "/world.frag")) { f.write(Shaders3D.FRAGMENT.getBytes("UTF-8")); }
         float[] cam = Camera3D.matrix(1080.0 / 2400.0, false);
         try (DataOutputStream d = new DataOutputStream(new FileOutputStream(outDir + "/camera.f32"))) {
             ByteBuffer b = ByteBuffer.allocate(64).order(ByteOrder.LITTLE_ENDIAN); for (float f : cam) b.putFloat(f); d.write(b.array());

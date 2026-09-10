@@ -33,6 +33,7 @@ public final class GlRenderer3D implements GLSurfaceView.Renderer {
 
     final AssetManager assets;
     SkinnedRenderer skinned;
+    BackdropRenderer backdrop;
     SkinnedRenderer.Instance[] characters = new SkinnedRenderer.Instance[2];
     long lastNanos;
 
@@ -92,6 +93,13 @@ public final class GlRenderer3D implements GLSurfaceView.Renderer {
         GLES20.glEnable(2929);
         GLES20.glDisable(2884);
         try {
+            this.backdrop = new BackdropRenderer(this.assets);
+            this.backdrop.create();
+        } catch (Exception e) {
+            Log.e("Bachke", "backdrop unavailable", e);
+            this.backdrop = null;
+        }
+        try {
             this.skinned = new SkinnedRenderer();
             this.skinned.create();
             this.characters[0] = this.skinned.upload(this.assets, "jojo.bgm", "jojo_albedo.png", "jojo_carnival_albedo.png", CharacterAnimator.JOJO_RUN_CLIP_SPEED);
@@ -137,8 +145,12 @@ public final class GlRenderer3D implements GLSurfaceView.Renderer {
             float f4 = f == 1.0f ? 0.24f : 0.83f;
             GLES20.glClearColor(f2, f3, f4, 1.0f);
             GLES20.glClear(16640);
+            float[] cameraMatrix = Camera3D.matrix((double) this.width / this.height, z);
+            if (this.backdrop != null) {
+                this.backdrop.draw(route, cameraMatrix, this.ui.night, z ? this.ui.ambience * 0.6d : this.core.renderDistance(), f2, f3, f4);
+            }
             GLES20.glUseProgram(this.program);
-            GLES20.glUniformMatrix4fv(this.camera, 1, false, Camera3D.matrix((double) this.width / this.height, z), 0);
+            GLES20.glUniformMatrix4fv(this.camera, 1, false, cameraMatrix, 0);
             GLES20.glUniform1f(this.clock, (float) this.ui.ambience);
             GLES20.glUniform1f(this.night, f);
             GLES20.glUniform3f(this.fog, f2, f3, f4);
@@ -164,7 +176,7 @@ public final class GlRenderer3D implements GLSurfaceView.Renderer {
                 float py = z ? 0.0f : (float) this.core.renderY();
                 float yaw = z ? (float) ((Math.sin(this.ui.ambience * 0.6d) * 0.22d) + Math.PI) : 0.0f;
                 float lean = z ? 0.0f : (float) Math.max(-0.18d, Math.min(0.18d, (this.core.x - this.core.target()) * 0.15d));
-                this.skinned.draw(inst, this.ui.skin, Camera3D.matrix((double) this.width / this.height, z), px, py, 0.0f, yaw, -lean, 1.85f, f, f2, f3, f4);
+                this.skinned.draw(inst, this.ui.skin, cameraMatrix, px, py, 0.0f, yaw, -lean, 1.85f, f, f2, f3, f4);
             }
         }
     }
