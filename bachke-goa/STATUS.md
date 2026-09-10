@@ -126,3 +126,30 @@ Progress by phase, roughly: mechanics 85 %, product scope 80 %, environment art 
 - `tools/` — the GLB inspector, FK analyser and headless render harness used to produce all of the above.
 
 Raw GLBs (43 MB) are not committed; you hold the originals. Renders here are desktop SwiftShader output — they prove asset content and motion, not Android performance.
+
+---
+
+## Addendum — progress in this session (CP16 → CP21, all on `claude/bachke-goa-cp15-dev-lxi0t9`)
+
+| Requirement | Was (audit) | Now | Evidence |
+|---|---|---|---|
+| Source tree | lost | **recovered** from the APK, buildable; 9 decompiler artifacts + 1 dropped-cast bug fixed; opcode audit vs original | CP16, CP18 |
+| Regression suite | lost | **59 core + 42 animation checks**, deterministic, `scripts/test.sh` | `qa/*.txt` |
+| Level-4 difficulty gate | not in binary | **implemented and tested** | CP16 |
+| Skinned + textured rendering | none | **GLES 3.0 skinned path**, BGM format, 23 bones, 4 influences | CP17 |
+| Jojo / Maya in game | not integrated | **integrated**, 14k / 12k tris, 1024² albedo, speed-matched run, jump/slide/dodge/hit state machine | CP17 |
+| Two skins each | none | **Everyday + Carnival** for both, UV-mask recolour | CP18 |
+| Environment | vertex-colour blockouts, grey road | **sky gradient, painted Goa skyline per route (day/night), paved road, leaf-frond palms, roof tiles, plaster** | CP19–20 |
+| Encounters | crossing carts only | **carts, crate stacks, barriers, scooters, paired carts**, gated by level | CP21 |
+| Camera | runner clipped at street edge | **follows 60 %** | CP21 |
+| Desktop proof | none | headless WebGL harness renders the actual renderer's geometry and shaders; caught a link-time shader error | CP19 |
+
+Open, in priority order:
+1. **Physical OnePlus 15 test** — first real device evidence. Uninstall 0.4.0, install `Bachke-Goa-0.5.0-dev.apk` (CP21).
+2. **Jojo backpack** — needs a regenerated source model with the backpack; pipeline ready (`tools/README.md`).
+3. Modelled street props through the same pipeline (facades, cart, scooter, lamp): the step from blockout to production.
+4. Run-loop polish: `Run_Anime` 10.7 cm loop seam, residual foot slide; approve only from device capture. No secondary motion (rig has no hair/cloth bones).
+5. ASTC/ETC2 texture compression and APK trim after the device check.
+6. Animation-library licence check before any store release.
+
+Estimate: mechanics 90 %, scope 90 %, engine 80 %, character art 75 % (backpack missing), animation 55 %, environment 55 %, QA suite restored, device validation 0 %.
