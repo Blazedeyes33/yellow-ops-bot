@@ -12,6 +12,9 @@ public final class Stage3D {
             this.worlds[i] = World3D.build(i);
         }
     }
+    /** When true the procedural CP9 character is not emitted; GlRenderer3D draws the skinned model instead. */
+    public boolean skinnedCharacter;
+
     public void frame(RunnerCore runnerCore, int i, double d, boolean z) {
         double d2;
         boolean z2;
@@ -132,7 +135,9 @@ public final class Stage3D {
             d7 = runnerCore.time - runnerCore.landAt;
         }
         double d23 = d3;
-        Model3D.character(mesh3D, i, renderDistance, d, renderY, z2, d7, max);
+        if (!this.skinnedCharacter) {
+            Model3D.character(mesh3D, i, renderDistance, d, renderY, z2, d7, max);
+        }
         mesh3D.yaw = d23;
         mesh3D.oz = d23;
         mesh3D.oy = d23;

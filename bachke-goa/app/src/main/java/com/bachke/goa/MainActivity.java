@@ -39,11 +39,11 @@ public final class MainActivity extends Activity {
         getWindow().getDecorView().setSystemUiVisibility(5894);
         try {
             this.gl = new GLSurfaceView(this);
-            this.gl.setEGLContextClientVersion(2);
+            this.gl.setEGLContextClientVersion(3);
             this.gl.setEGLConfigChooser(8, 8, 8, 0, 24, 0);
             this.gl.setPreserveEGLContextOnPause(true);
             this.game = new GameView(this);
-            this.gl.setRenderer(new GlRenderer3D(this.game.core, this.game.scene));
+            this.gl.setRenderer(new GlRenderer3D(this.game.core, this.game.scene, getAssets()));
             this.gl.setRenderMode(0);
             FrameLayout frameLayout = new FrameLayout(this);
             frameLayout.addView(this.gl);

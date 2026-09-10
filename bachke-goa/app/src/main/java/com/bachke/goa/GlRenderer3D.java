@@ -1,6 +1,8 @@
 package com.bachke.goa;
 
+import android.content.res.AssetManager;
 import android.opengl.GLES20;
+import android.util.Log;
 import android.opengl.GLSurfaceView;
 import com.bachke.goa.GameCore;
 import java.nio.ByteBuffer;
@@ -29,9 +31,15 @@ public final class GlRenderer3D implements GLSurfaceView.Renderer {
     int height = 960;
     int[] buffers = new int[6];
 
-    public GlRenderer3D(RunnerCore runnerCore, Scene scene) {
+    final AssetManager assets;
+    SkinnedRenderer skinned;
+    SkinnedRenderer.Instance[] characters = new SkinnedRenderer.Instance[2];
+    long lastNanos;
+
+    public GlRenderer3D(RunnerCore runnerCore, Scene scene, AssetManager assetManager) {
         this.core = runnerCore;
         this.ui = scene;
+        this.assets = assetManager;
     }
 
     private int shader(int i, String str) {
@@ -83,6 +91,19 @@ public final class GlRenderer3D implements GLSurfaceView.Renderer {
         }
         GLES20.glEnable(2929);
         GLES20.glDisable(2884);
+        try {
+            this.skinned = new SkinnedRenderer();
+            this.skinned.create();
+            this.characters[0] = this.skinned.upload(this.assets, "jojo.bgm", "jojo_albedo.png", CharacterAnimator.JOJO_RUN_CLIP_SPEED);
+            this.characters[1] = this.skinned.upload(this.assets, "maya.bgm", "maya_albedo.png", CharacterAnimator.MAYA_RUN_CLIP_SPEED);
+            this.stage.skinnedCharacter = true;
+        } catch (Exception e) {
+            // Fall back to the procedural CP9 character rather than crash; logged for QA.
+            Log.e("Bachke", "skinned character unavailable, using procedural fallback", e);
+            this.skinned = null;
+            this.stage.skinnedCharacter = false;
+        }
+        this.lastNanos = 0L;
     }
 
     @Override // android.opengl.GLSurfaceView.Renderer
@@ -132,6 +153,19 @@ public final class GlRenderer3D implements GLSurfaceView.Renderer {
             GLES20.glBindBuffer(34962, this.buffers[5]);
             GLES20.glBufferData(34962, mesh3D.size * 4, this.dynamic, 35048);
             draw(this.buffers[5], mesh3D.vertices(), 0.0f);
+            if (this.skinned != null) {
+                long now = System.nanoTime();
+                double dt = this.lastNanos == 0L ? 0.016d : Math.min(0.05d, (now - this.lastNanos) / 1.0E9d);
+                this.lastNanos = now;
+                int which = Math.max(0, Math.min(1, this.ui.character));
+                SkinnedRenderer.Instance inst = this.characters[which];
+                inst.animator.update(this.core, z, dt);
+                float px = z ? 0.0f : (float) this.core.renderX();
+                float py = z ? 0.0f : (float) this.core.renderY();
+                float yaw = z ? (float) ((Math.sin(this.ui.ambience * 0.6d) * 0.22d) + Math.PI) : 0.0f;
+                float lean = z ? 0.0f : (float) Math.max(-0.18d, Math.min(0.18d, (this.core.x - this.core.target()) * 0.15d));
+                this.skinned.draw(inst, Camera3D.matrix(this.width / this.height, z), px, py, 0.0f, yaw, -lean, 1.85f, f, f2, f3, f4);
+            }
         }
     }
 }

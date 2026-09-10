@@ -42,6 +42,9 @@ public final class RunnerCore {
     public double x;
     public double y;
     public GameCore.State state = GameCore.State.MENU;
+    /** Last discrete swipe action and the sim time it was accepted; read by CharacterAnimator. */
+    public Action lastAction;
+    public double lastActionTime = -10.0d;
     public final List<Hazard> hazards = new ArrayList();
     public final List<Coin> coins = new ArrayList();
     public final List<GameCore.Event> events = new ArrayList();
@@ -131,6 +134,8 @@ public final class RunnerCore {
         this.closeCalls = 0;
         this.closeAt = -10.0d;
         this.lane = 0;
+        this.lastAction = null;
+        this.lastActionTime = -10.0d;
         this.rows = 0;
         this.bonus = 0;
         this.cleared = 0;
@@ -216,6 +221,12 @@ public final class RunnerCore {
     }
 
     public boolean act(Action action) {
+        boolean accepted = actInternal(action);
+        if (accepted) { this.lastAction = action; this.lastActionTime = this.time; }
+        return accepted;
+    }
+
+    private boolean actInternal(Action action) {
         double d;
         double d2;
         if (this.state != GameCore.State.PLAYING) {

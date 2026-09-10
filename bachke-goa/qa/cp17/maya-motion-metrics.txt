@@ -1,0 +1,197 @@
+REST: pelvis Y=0.908  foot Y=0.244  ball Y=0.165  (units)
+
+## Jog
+  duration 1.167s  keyframes 29  (24.9 fps)  channels 67  root motion travel 0.000
+  loop discontinuity (max joint pos delta first->last) 0.3 cm
+  L contact 0/60 samples (0%)   R contact 7/60 (12%)   both airborne 53/60
+  min ball height 0.024 (rest 0.165)  pelvis bob 0.239
+  planted-foot fwd velocity: mean -4.518 u/s  std 0.207  (skate index std/|mean| = 0.05)
+  R elbow angle range 97-116 deg   R knee range 77-174 deg
+  pelvis yaw range 2.8 deg  shoulder yaw range 97.1 deg  pelvis/shoulder yaw corr +0.97 (negative = counter-rotation)
+
+## Sprint
+  duration 0.833s  keyframes 21  (25.2 fps)  channels 67  root motion travel 0.000
+  loop discontinuity (max joint pos delta first->last) 0.0 cm
+  L contact 8/60 samples (13%)   R contact 9/60 (15%)   both airborne 43/60
+  min ball height 0.043 (rest 0.165)  pelvis bob 0.138
+  planted-foot fwd velocity: mean -3.591 u/s  std 2.784  (skate index std/|mean| = 0.78)
+  R elbow angle range 97-116 deg   R knee range 86-174 deg
+  pelvis yaw range 3.2 deg  shoulder yaw range 80.0 deg  pelvis/shoulder yaw corr +0.97 (negative = counter-rotation)
+
+## Run_Anime
+  duration 0.750s  keyframes 18  (24.0 fps)  channels 67  root motion travel 0.000
+  loop discontinuity (max joint pos delta first->last) 10.7 cm
+  L contact 7/60 samples (12%)   R contact 13/60 (22%)   both airborne 40/60
+  min ball height -0.023 (rest 0.165)  pelvis bob 0.099
+  planted-foot fwd velocity: mean -4.033 u/s  std 1.227  (skate index std/|mean| = 0.30)
+  R elbow angle range 71-128 deg   R knee range 55-169 deg
+  pelvis yaw range 21.8 deg  shoulder yaw range 57.0 deg  pelvis/shoulder yaw corr -0.98 (negative = counter-rotation)
+
+## Run_Female
+  duration 0.833s  keyframes 20  (24.0 fps)  channels 67  root motion travel 0.000
+  loop discontinuity (max joint pos delta first->last) 8.5 cm
+  L contact 0/60 samples (0%)   R contact 10/60 (17%)   both airborne 50/60
+  min ball height -0.005 (rest 0.165)  pelvis bob 0.099
+  planted-foot fwd velocity: mean -3.839 u/s  std 1.407  (skate index std/|mean| = 0.37)
+  R elbow angle range 73-133 deg   R knee range 56-174 deg
+  pelvis yaw range 36.3 deg  shoulder yaw range 54.6 deg  pelvis/shoulder yaw corr -1.00 (negative = counter-rotation)
+
+## Run_Stealth
+  duration 0.542s  keyframes 13  (24.0 fps)  channels 67  root motion travel 0.000
+  loop discontinuity (max joint pos delta first->last) 2.2 cm
+  L contact 5/60 samples (8%)   R contact 9/60 (15%)   both airborne 46/60
+  min ball height -0.029 (rest 0.165)  pelvis bob 0.034
+  planted-foot fwd velocity: mean -8.240 u/s  std 1.965  (skate index std/|mean| = 0.24)
+  R elbow angle range 107-128 deg   R knee range 83-143 deg
+  pelvis yaw range 31.1 deg  shoulder yaw range 26.7 deg  pelvis/shoulder yaw corr -1.00 (negative = counter-rotation)
+
+## Run_Jump
+  duration 1.250s  keyframes 30  (24.0 fps)  channels 67  root motion travel 0.000
+  loop discontinuity (max joint pos delta first->last) 0.3 cm
+  L contact 16/60 samples (27%)   R contact 0/60 (0%)   both airborne 44/60
+  min ball height 0.148 (rest 0.165)  pelvis bob 0.000
+  planted-foot fwd velocity: mean +0.001 u/s  std 0.084  (skate index std/|mean| = 143.46)
+  R elbow angle range 159-167 deg   R knee range 146-166 deg
+  pelvis yaw range 0.0 deg  shoulder yaw range 0.0 deg  pelvis/shoulder yaw corr -1.00 (negative = counter-rotation)
+
+## Jump_Start
+  duration 1.667s  keyframes 41  (24.6 fps)  channels 67  root motion travel 0.000
+  loop discontinuity (max joint pos delta first->last) 81.4 cm
+  L contact 3/60 samples (5%)   R contact 12/60 (20%)   both airborne 46/60
+  min ball height 0.073 (rest 0.165)  pelvis bob 0.354
+  planted-foot fwd velocity: mean -0.107 u/s  std 0.240  (skate index std/|mean| = 2.25)
+  R elbow angle range 113-168 deg   R knee range 66-170 deg
+  pelvis yaw range 7.6 deg  shoulder yaw range 13.8 deg  pelvis/shoulder yaw corr +0.73 (negative = counter-rotation)
+
+## Jump_air
+  duration 3.125s  keyframes 76  (24.3 fps)  channels 67  root motion travel 0.000
+  loop discontinuity (max joint pos delta first->last) 0.0 cm
+  L contact 0/60 samples (0%)   R contact 30/60 (50%)   both airborne 30/60
+  min ball height 0.079 (rest 0.165)  pelvis bob 0.001
+  planted-foot fwd velocity: mean -0.009 u/s  std 0.017  (skate index std/|mean| = 1.76)
+  R elbow angle range 155-168 deg   R knee range 128-150 deg
+  pelvis yaw range 5.2 deg  shoulder yaw range 5.5 deg  pelvis/shoulder yaw corr +1.00 (negative = counter-rotation)
+
+## Jump_Land
+  duration 1.583s  keyframes 39  (24.6 fps)  channels 67  root motion travel 0.000
+  loop discontinuity (max joint pos delta first->last) 42.7 cm
+  L contact 56/60 samples (93%)   R contact 53/60 (88%)   both airborne 4/60
+  min ball height 0.102 (rest 0.165)  pelvis bob 0.495
+  planted-foot fwd velocity: mean -0.030 u/s  std 0.099  (skate index std/|mean| = 3.31)
+  R elbow angle range 148-155 deg   R knee range 68-161 deg
+  pelvis yaw range 1.4 deg  shoulder yaw range 8.2 deg  pelvis/shoulder yaw corr +1.00 (negative = counter-rotation)
+
+## Jump_2
+  duration 1.625s  keyframes 39  (24.0 fps)  channels 67  root motion travel 0.000
+  loop discontinuity (max joint pos delta first->last) 15.6 cm
+  L contact 4/60 samples (7%)   R contact 5/60 (8%)   both airborne 55/60
+  min ball height -0.009 (rest 0.165)  pelvis bob 0.319
+  planted-foot fwd velocity: mean +0.244 u/s  std 0.176  (skate index std/|mean| = 0.72)
+  R elbow angle range 65-172 deg   R knee range 58-174 deg
+  pelvis yaw range 1.7 deg  shoulder yaw range 1.6 deg  pelvis/shoulder yaw corr +1.00 (negative = counter-rotation)
+
+## Slide_Start
+  duration 0.833s  keyframes 21  (25.2 fps)  channels 67  root motion travel 0.000
+  loop discontinuity (max joint pos delta first->last) 0.0 cm
+  L contact 0/60 samples (0%)   R contact 1/60 (2%)   both airborne 59/60
+  min ball height -0.154 (rest 0.165)  pelvis bob 0.779
+  R elbow angle range 97-168 deg   R knee range 96-174 deg
+  pelvis yaw range 13.0 deg  shoulder yaw range 19.7 deg  pelvis/shoulder yaw corr +0.18 (negative = counter-rotation)
+
+## Slide
+  duration 2.000s  keyframes 49  (24.5 fps)  channels 67  root motion travel 0.000
+  loop discontinuity (max joint pos delta first->last) 0.0 cm
+  L contact 60/60 samples (100%)   R contact 11/60 (18%)   both airborne 0/60
+  min ball height -0.036 (rest 0.165)  pelvis bob 0.013
+  planted-foot fwd velocity: mean +0.001 u/s  std 0.089  (skate index std/|mean| = 69.27)
+  R elbow angle range 134-157 deg   R knee range 154-174 deg
+  pelvis yaw range 9.4 deg  shoulder yaw range 11.0 deg  pelvis/shoulder yaw corr -0.80 (negative = counter-rotation)
+
+## Slide_Exit
+  duration 0.500s  keyframes 13  (26.0 fps)  channels 67  root motion travel 0.000
+  loop discontinuity (max joint pos delta first->last) 173.5 cm
+  L contact 0/60 samples (0%)   R contact 33/60 (55%)   both airborne 27/60
+  min ball height -0.083 (rest 0.165)  pelvis bob 0.778
+  planted-foot fwd velocity: mean -2.819 u/s  std 2.619  (skate index std/|mean| = 0.93)
+  R elbow angle range 97-134 deg   R knee range 73-174 deg
+  pelvis yaw range 23.3 deg  shoulder yaw range 36.4 deg  pelvis/shoulder yaw corr +0.89 (negative = counter-rotation)
+
+## Dodge_left
+  duration 0.833s  keyframes 20  (24.0 fps)  channels 67  root motion travel 0.000
+  loop discontinuity (max joint pos delta first->last) 21.5 cm
+  L contact 18/60 samples (30%)   R contact 19/60 (32%)   both airborne 41/60
+  min ball height 0.021 (rest 0.165)  pelvis bob 0.205
+  planted-foot fwd velocity: mean +0.102 u/s  std 0.196  (skate index std/|mean| = 1.92)
+  R elbow angle range 82-149 deg   R knee range 88-147 deg
+  pelvis yaw range 28.9 deg  shoulder yaw range 62.7 deg  pelvis/shoulder yaw corr +0.91 (negative = counter-rotation)
+
+## Dodge_right
+  duration 0.833s  keyframes 20  (24.0 fps)  channels 67  root motion travel 0.000
+  loop discontinuity (max joint pos delta first->last) 22.9 cm
+  L contact 0/60 samples (0%)   R contact 17/60 (28%)   both airborne 43/60
+  min ball height 0.007 (rest 0.165)  pelvis bob 0.205
+  planted-foot fwd velocity: mean +0.224 u/s  std 0.250  (skate index std/|mean| = 1.12)
+  R elbow angle range 70-171 deg   R knee range 71-135 deg
+  pelvis yaw range 28.9 deg  shoulder yaw range 62.7 deg  pelvis/shoulder yaw corr +0.91 (negative = counter-rotation)
+
+## Roll
+  duration 1.833s  keyframes 45  (24.5 fps)  channels 67  root motion travel 0.000
+  loop discontinuity (max joint pos delta first->last) 51.0 cm
+  L contact 0/60 samples (0%)   R contact 2/60 (3%)   both airborne 58/60
+  min ball height 0.045 (rest 0.165)  pelvis bob 1.097
+  R elbow angle range 103-161 deg   R knee range 45-173 deg
+  pelvis yaw range 168.0 deg  shoulder yaw range 358.7 deg  pelvis/shoulder yaw corr +0.22 (negative = counter-rotation)
+
+## Hit_Knockback
+  duration 0.833s  keyframes 21  (25.2 fps)  channels 67  root motion travel 0.000
+  loop discontinuity (max joint pos delta first->last) 0.0 cm
+  L contact 2/60 samples (3%)   R contact 3/60 (5%)   both airborne 56/60
+  min ball height -0.311 (rest 0.165)  pelvis bob 0.809
+  planted-foot fwd velocity: mean -8.731 u/s  std 0.151  (skate index std/|mean| = 0.02)
+  R elbow angle range 105-174 deg   R knee range 80-162 deg
+  pelvis yaw range 113.5 deg  shoulder yaw range 329.9 deg  pelvis/shoulder yaw corr +0.03 (negative = counter-rotation)
+
+## Land_Three_Point
+  duration 1.375s  keyframes 33  (24.0 fps)  channels 67  root motion travel 0.000
+  loop discontinuity (max joint pos delta first->last) 514.5 cm
+  L contact 30/60 samples (50%)   R contact 4/60 (7%)   both airborne 26/60
+  min ball height 0.120 (rest 0.165)  pelvis bob 4.442
+  planted-foot fwd velocity: mean +0.120 u/s  std 0.314  (skate index std/|mean| = 2.62)
+  R elbow angle range 125-155 deg   R knee range 91-174 deg
+  pelvis yaw range 6.2 deg  shoulder yaw range 161.5 deg  pelvis/shoulder yaw corr +0.92 (negative = counter-rotation)
+
+## Idle_ShakeOff
+  duration 2.500s  keyframes 61  (24.4 fps)  channels 67  root motion travel 0.000
+  loop discontinuity (max joint pos delta first->last) 0.0 cm
+  L contact 60/60 samples (100%)   R contact 60/60 (100%)   both airborne 0/60
+  min ball height 0.110 (rest 0.165)  pelvis bob 0.008
+  planted-foot fwd velocity: mean -0.000 u/s  std 0.015  (skate index std/|mean| = 15321823.33)
+  R elbow angle range 151-151 deg   R knee range 153-161 deg
+  pelvis yaw range 0.0 deg  shoulder yaw range 0.0 deg  pelvis/shoulder yaw corr +0.94 (negative = counter-rotation)
+
+## Dizzy
+  duration 2.417s  keyframes 58  (24.0 fps)  channels 67  root motion travel 0.000
+  loop discontinuity (max joint pos delta first->last) 0.1 cm
+  L contact 31/60 samples (52%)   R contact 27/60 (45%)   both airborne 2/60
+  min ball height 0.025 (rest 0.165)  pelvis bob 0.001
+  planted-foot fwd velocity: mean +0.014 u/s  std 0.024  (skate index std/|mean| = 1.66)
+  R elbow angle range 164-164 deg   R knee range 137-145 deg
+  pelvis yaw range 2.0 deg  shoulder yaw range 6.1 deg  pelvis/shoulder yaw corr -1.00 (negative = counter-rotation)
+
+## Idle_A
+  duration 3.125s  keyframes 76  (24.3 fps)  channels 67  root motion travel 0.000
+  loop discontinuity (max joint pos delta first->last) 0.0 cm
+  L contact 60/60 samples (100%)   R contact 60/60 (100%)   both airborne 0/60
+  min ball height 0.110 (rest 0.165)  pelvis bob 0.008
+  planted-foot fwd velocity: mean -0.000 u/s  std 0.012  (skate index std/|mean| = 12256982.32)
+  R elbow angle range 151-151 deg   R knee range 153-161 deg
+  pelvis yaw range 0.0 deg  shoulder yaw range 0.0 deg  pelvis/shoulder yaw corr +0.94 (negative = counter-rotation)
+
+## Walk
+  duration 1.667s  keyframes 41  (24.6 fps)  channels 67  root motion travel 0.000
+  loop discontinuity (max joint pos delta first->last) 0.0 cm
+  L contact 6/60 samples (10%)   R contact 19/60 (32%)   both airborne 35/60
+  min ball height 0.029 (rest 0.165)  pelvis bob 0.053
+  planted-foot fwd velocity: mean -0.723 u/s  std 0.271  (skate index std/|mean| = 0.37)
+  R elbow angle range 153-162 deg   R knee range 110-174 deg
+  pelvis yaw range 2.7 deg  shoulder yaw range 13.1 deg  pelvis/shoulder yaw corr +0.98 (negative = counter-rotation)

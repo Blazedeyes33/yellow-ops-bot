@@ -1,0 +1,44 @@
+ok   jojo.bgm: bones <= MAX_BONES (23)
+ok   jojo.bgm: u16 indices (12407 verts)
+ok   jojo.bgm: triangle budget <= 14000 (14000)
+ok   jojo.bgm: has core clips
+ok   jojo.bgm: no finger bones
+ok   jojo.bgm: weights sum to 1
+ok   jojo.bgm: joint indices in range
+ok   jojo.bgm: bind-pose skinning reproduces mesh (max err 0.0000)
+ok   jojo.bgm: posed Idle_A height 1.87 within 15% of bind 1.90, radius 0.54
+ok   jojo.bgm: Run_Anime loop translation seam 0.004
+ok   jojo.bgm: pelvis bone present
+ok   jojo.bgm: pelvis height plausible in run (0.65..0.75)
+ok   jojo.bgm: menu -> IDLE
+ok   jojo.bgm: playing -> RUN
+ok   jojo.bgm: run rate matches world speed
+ok   jojo.bgm: jump plays start -> air -> land
+ok   jojo.bgm: back to RUN after landing
+ok   jojo.bgm: slide plays slide -> exit -> run
+ok   jojo.bgm: swipe left plays dodge and returns
+ok   jojo.bgm: OVER -> HIT
+ok   jojo.bgm: blended quaternions normalised
+ok   maya.bgm: bones <= MAX_BONES (23)
+ok   maya.bgm: u16 indices (10041 verts)
+ok   maya.bgm: triangle budget <= 14000 (11999)
+ok   maya.bgm: has core clips
+ok   maya.bgm: no finger bones
+ok   maya.bgm: weights sum to 1
+ok   maya.bgm: joint indices in range
+ok   maya.bgm: bind-pose skinning reproduces mesh (max err 0.0000)
+ok   maya.bgm: posed Idle_A height 1.83 within 15% of bind 1.90, radius 0.67
+ok   maya.bgm: Run_Anime loop translation seam 0.004
+ok   maya.bgm: pelvis bone present
+ok   maya.bgm: pelvis height plausible in run (0.65..0.75)
+ok   maya.bgm: menu -> IDLE
+ok   maya.bgm: playing -> RUN
+ok   maya.bgm: run rate matches world speed
+ok   maya.bgm: jump plays start -> air -> land
+ok   maya.bgm: back to RUN after landing
+ok   maya.bgm: slide plays slide -> exit -> run
+ok   maya.bgm: swipe left plays dodge and returns
+ok   maya.bgm: OVER -> HIT
+ok   maya.bgm: blended quaternions normalised
+
+42 passed, 0 failed
