@@ -1,0 +1,5 @@
+build/
+signing/*.p12
+signing/*.jks
+*.apk
+*.idsig
