@@ -1,0 +1,864 @@
+
+   ·  
+  · 
+  ·  Ready to ru
+  �
+ CLOSE CALLS
+ COINS
+ close calls
+ coins
+ seconds.
+ ·
+$SwitchMap$com$bachke$goa$GameCore$Motion
+$VALUES
+$values
+%05d
+()V
+.wav
+01   DRAG TO DODGE
+02   JUMP OR SLIDE
+03   KEEP YOUR RHYTHM
+04   CHASE YOUR BEST
+2× TA
+<clinit>
+<init>
+>;
+ARGB_8888
+ARRE! BACHKE.
+ASSETS
+Action
+AndroidPainter.java
+BACHKE!
+BACHKE! CLOSE CALL �
+BACHKE! GOA  ·  0.4 3D ALPH
+BACK TO GOA
+BACK TO HOME
+BARRIER
+BEST 
+BOOST
+BOOST �
+Bachke Goa. Swipe left or right, up to jump, down to slide.
+Bachke! Goa could not load its game files. Please reinstall this APK.
+CARNIVAL
+CENTER
+CLEAR
+COIN
+CRATE
+CREAM
+CREW
+Calangute
+Camera3D.java
+Carnival
+Chain close calls for up to 5×
+CharacterRig.java
+Choose your own path through the market.
+Coin
+D
+D8$$SyntheticClass
+DAY
+DD
+DDD
+DL
+DOUBLE_MAX
+DOUBLE_MIN
+DRAG SIDEWAYS TO THREAD THE GAP
+Drag sideways to position your runner.
+EVERYDAY
+Empty rig component
+Event
+Everyday
+F
+FALL
+FILL
+FRAGMENT
+Five places. One continuous run.
+Fontainhas & riverside
+Friday market rush
+Futsal captain
+G O A
+GAP
+GET SET. GO!
+GOA TOUR
+GOLD
+GOT IT. PLAY!  �
+GRAVITY
+GameCore.java
+GameView
+GlRenderer3D.java
+Goa changes every 20 seconds.
+HAPTICS
+HELP
+HIGH! 2�
+HIT
+HOME
+HOW TO PLAY
+Hazard
+HomeScreen.java
+Hud3D.java
+I
+ID
+II
+IIFFIIF
+III
+IIL
+IL
+ILI
+INK
+J
+JOJO
+JUMP
+JUMP  /  DOUBLE TAP
+JUMP �
+Keep moving as the pace increases.
+Kind
+L
+LAND
+LANE
+LDD
+LDZ
+LEFT
+LET'S GO  �
+LEVEL
+LEVEL 
+LEVEL_SECONDS
+LI
+LL
+LLI
+LLII
+LLIIII
+LLIIL
+LLL
+LLLL
+LLZ
+Landroid/app/Activity;
+Landroid/content/Context;
+Landroid/content/SharedPreferences$Editor;
+Landroid/content/SharedPreferences;
+Landroid/content/res/AssetFileDescriptor;
+Landroid/content/res/AssetManager;
+Landroid/graphics/Bitmap$Config;
+Landroid/graphics/Bitmap;
+Landroid/graphics/BitmapFactory;
+Landroid/graphics/Canvas;
+Landroid/graphics/Paint$Align;
+Landroid/graphics/Paint$Cap;
+Landroid/graphics/Paint$Style;
+Landroid/graphics/Paint;
+Landroid/graphics/Rect;
+Landroid/graphics/RectF;
+Landroid/graphics/Typeface;
+Landroid/media/AudioAttributes$Builder;
+Landroid/media/AudioAttributes;
+Landroid/media/AudioFocusRequest$Builder;
+Landroid/media/AudioFocusRequest;
+Landroid/media/AudioManager$OnAudioFocusChangeListener;
+Landroid/media/AudioManager;
+Landroid/media/SoundPool$Builder;
+Landroid/media/SoundPool;
+Landroid/opengl/GLES20;
+Landroid/opengl/GLSurfaceView$Renderer;
+Landroid/opengl/GLSurfaceView;
+Landroid/os/Build$VERSION;
+Landroid/os/Bundle;
+Landroid/view/Choreographer$FrameCallback;
+Landroid/view/Choreographer;
+Landroid/view/DisplayCutout;
+Landroid/view/MotionEvent;
+Landroid/view/View$OnApplyWindowInsetsListener;
+Landroid/view/View;
+Landroid/view/Window;
+Landroid/view/WindowInsets;
+Landroid/widget/FrameLayout;
+Landroid/widget/TextView;
+Lcom/bachke/goa/AndroidPainter;
+Lcom/bachke/goa/Camera3D;
+Lcom/bachke/goa/CharacterRig;
+Lcom/bachke/goa/GameCore$Coin;
+Lcom/bachke/goa/GameCore$Event;
+Lcom/bachke/goa/GameCore$Motion;
+Lcom/bachke/goa/GameCore$Obstacle;
+Lcom/bachke/goa/GameCore$State;
+Lcom/bachke/goa/GameCore;
+Lcom/bachke/goa/GlRenderer3D;
+Lcom/bachke/goa/HomeScreen$Page;
+Lcom/bachke/goa/HomeScreen;
+Lcom/bachke/goa/Hud3D;
+Lcom/bachke/goa/MainActivity$GameView$$ExternalSyntheticLambda0;
+Lcom/bachke/goa/MainActivity$GameView$$ExternalSyntheticLambda1;
+Lcom/bachke/goa/MainActivity$GameView;
+Lcom/bachke/goa/MainActivity;
+Lcom/bachke/goa/Mesh3D;
+Lcom/bachke/goa/Model3D;
+Lcom/bachke/goa/Painter;
+Lcom/bachke/goa/RigAssets;
+Lcom/bachke/goa/Routes;
+Lcom/bachke/goa/RunnerCore$Action;
+Lcom/bachke/goa/RunnerCore$Coin;
+Lcom/bachke/goa/RunnerCore$Hazard;
+Lcom/bachke/goa/RunnerCore$Kind;
+Lcom/bachke/goa/RunnerCore;
+Lcom/bachke/goa/Scene$1;
+Lcom/bachke/goa/Scene;
+Lcom/bachke/goa/Shaders3D;
+Lcom/bachke/goa/Stage3D;
+Lcom/bachke/goa/SwipeInput;
+Lcom/bachke/goa/World3D;
+Ldalvik/annotation/EnclosingClass;
+Ldalvik/annotation/InnerClass;
+Ldalvik/annotation/MemberClasses;
+Ldalvik/annotation/Signature;
+Ldalvik/annotation/Throws;
+Ljava/io/IOException;
+Ljava/io/InputStream;
+Ljava/lang/CharSequence;
+Ljava/lang/Class;
+Ljava/lang/Double;
+Ljava/lang/Enum;
+Ljava/lang/Enum<
+Ljava/lang/IllegalArgumentException;
+Ljava/lang/IllegalStateException;
+Ljava/lang/Integer;
+Ljava/lang/Math;
+Ljava/lang/NoSuchFieldError;
+Ljava/lang/Object;
+Ljava/lang/String;
+Ljava/lang/StringBuilder;
+Ljava/lang/System;
+Ljava/lang/Throwable;
+Ljava/nio/Buffer;
+Ljava/nio/ByteBuffer;
+Ljava/nio/ByteOrder;
+Ljava/nio/FloatBuffer;
+Ljava/util/ArrayList;
+Ljava/util/Arrays;
+Ljava/util/EnumMap;
+Ljava/util/EnumMap<
+Ljava/util/HashMap;
+Ljava/util/HashMap<
+Ljava/util/Iterator;
+Ljava/util/List;
+Ljava/util/List<
+Ljava/util/Locale;
+Ljava/util/Random;
+Ljavax/microedition/khronos/egl/EGLConfig;
+Ljavax/microedition/khronos/opengles/GL10;
+Local all-rounder
+MAX_SPEED
+MAYA
+MENU
+MOODS
+MainActivity.java
+Make yourself comfortable.
+Mapusa
+Margao
+Mesh3D.java
+Model3D.java
+Motion
+NAMES
+NEXT: 
+NIGHT
+OFF
+ON
+OUTFIT
+OVER
+Obstacle
+Old Goa
+One more run?
+PANJIM START  ·  ENDLESS GOA RU
+PAUSED
+PERSONAL BEST
+PLAY  �
+PLAY AS 
+PLAYER_HEIGHT
+PLAYER_WIDTH
+PLAYER_X
+PLAYING
+Page
+Painter.java
+Panjim
+Pass close without touching a cart.
+Pick your runner. Make it your run.
+RESUME  �
+RIGHT
+RISE
+ROOF
+ROUND
+RUN
+RUN AGAIN  �
+Reach this stop at 
+Read the moving carts. Find a gap.
+Ready for another run?
+RigAssets.java
+Routes.java
+RunnerCore.java
+Runs begin in Panjim. New stop every 20s.
+SCOOTER �
+SCORE
+SDK_INT
+SETTINGS
+SLIDE
+SOUND EFFECTS
+STEP
+STRIDE
+Same skills. Your style.
+Saved automatically on this phone.
+Scene.java
+Shaders3D.java
+Speed and crossing traffic increase.
+Stage3D.java
+State
+Swipe up to jump. Down to slide.
+SwipeInput.java
+TAKE A BREATHER
+TAKE A BREATHER.
+TALL BARRIERS NEED A DOUBLE TAP
+TAP AGAIN
+TAP TO JUMP
+TAP TWICE QUICKLY TO BOOST
+TEAL
+THE GOA TOUR
+TIME OF DAY
+TOUR
+Tap resume when you are ready.
+The coastal sprint
+The heritage stretch
+The market square
+Thread between crossing carts.
+UP: JUMP   ·   DOWN: SLID
+US
+Unable to decode 
+Unable to decode character rig
+Unknown obstacle
+V
+VAN
+VD
+VDD
+VDDD
+VDDDD
+VDDDDDDDDDDDDI
+VDDDDDDDDDI
+VDDDDDDDDI
+VDDDDDDI
+VDDDDDDZL
+VDDDDDI
+VDDDDI
+VDDDDID
+VDDL
+VERTEX
+VF
+VFF
+VFFFF
+VFFFFL
+VI
+VID
+VIDD
+VIDDDDDDDD
+VIF
+VIFFF
+VII
+VIIF
+VIII
+VIIII
+VIIIIII
+VIIIZII
+VIILI
+VIIZLI
+VIL
+VILI
+VJ
+VL
+VLDD
+VLDDD
+VLDDDDD
+VLDDDDI
+VLDDDII
+VLDDDIZZ
+VLDDII
+VLDDIII
+VLDDZ
+VLFFL
+VLI
+VLID
+VLIDDD
+VLIDDDDDDD
+VLIDDDDDL
+VLIDDDZDD
+VLIDZ
+VLII
+VLIIDDDDDDDDD
+VLIIDDDDDDDDDDD
+VLIIIDDDDZD
+VLIIIIII
+VLILII
+VLL
+VLLD
+VLLDDDDZ
+VLLDDI
+VLLL
+VLLLL
+VLZ
+VZ
+WHITE
+WOOD
+WORLD_WIDTH
+Watch for carts crossing the street.
+Watch the direction of crossing carts.
+World3D.java
+YOUR CREW
+You can also tap to jump.
+Your run is paused.
+Your run is safely paused.
+Z
+ZD
+ZDDDDDD
+ZFFFF
+ZI
+ZL
+ZLZ
+[D
+[F
+[I
+[Landroid/graphics/Bitmap;
+[Lcom/bachke/goa/CharacterRig;
+[Lcom/bachke/goa/GameCore$Event;
+[Lcom/bachke/goa/GameCore$Motion;
+[Lcom/bachke/goa/GameCore$State;
+[Lcom/bachke/goa/HomeScreen$Page;
+[Lcom/bachke/goa/Mesh3D;
+[Lcom/bachke/goa/RunnerCore$Action;
+[Lcom/bachke/goa/RunnerCore$Kind;
+[Ljava/lang/Object;
+[Ljava/lang/String;
+[Z
+[[Ljava/lang/String;
+aColor
+aNormal
+aPosition
+aWind
+abandonAudioFocusRequest
+abs
+access$000
+accessFlags
+accumulator
+act
+activate
+active
+actors
+add
+addFlags
+addSuppressed
+addView
+advance
+allocateDirect
+alphaPixel
+ambience
+append
+apply
+arm
+arraycopy
+asFloatBuffer
+atan2
+attribute vec3 aPosition;attribute vec3 aNormal;attribute vec3 aColor;attribute float aWind;uniform mat4 uCamera;uniform float uOffset;uniform float uTime;varying vec3 vNormal;varying vec3 vColor;varying float vDepth;void main(){vec3 p=aPosition;p.z+=uOffset;p.x+=sin(uTime*1.6+p.z*.19)*aWind*.17;p.y+=cos(uTime*1.3+p.x)*aWind*.08;vNormal=aNormal;vColor=aColor;vDepth=max(0.0,-p.z);gl_Position=uCamera*vec4(p,1.0);}
+audio
+autoPause
+bachke-alpha
+back
+background
+badge
+best
+bestStreet
+boat
+bold
+bone
+bonus
+boostTime
+boosted
+bottom
+box
+bufferedUntil
+buffers
+build
+button
+calangute.png
+camera
+cancel
+canvas
+capacity
+ceil
+changedAt
+character
+church
+clear
+cleared
+clip
+clipRect
+clock
+clone
+close
+closeAt
+closeCalls
+closest
+coin
+coins
+collected
+color
+combo
+copyOf
+copySign
+core
+cos
+create
+createBitmap
+crew
+crossing
+current
+data
+decodeStream
+depth
+distance
+doFrame
+down
+dragX
+dragged
+draw
+drawBitmap
+drawLine
+drawOval
+drawRoundRect
+drawText
+dynamic
+edit
+ellipse
+ellipsoid
+equals
+events
+extraSpeed
+f$0
+firstTap
+flip
+floor
+floorMod
+focus
+fog
+footLift
+footX
+footY
+footZ
+format
+frame
+from
+game
+gap
+gesture
+get
+getActionMasked
+getAssets
+getBoolean
+getDecorView
+getDisplayCutout
+getHeight
+getInstance
+getInt
+getPixels
+getSafeInsetTop
+getSharedPreferences
+getSystemService
+getSystemWindowInsetBottom
+getSystemWindowInsetTop
+getWidth
+getWindow
+getX
+getY
+gl
+glAttachShader
+glBindBuffer
+glBufferData
+glClear
+glClearColor
+glCompileShader
+glCreateProgram
+glCreateShader
+glDeleteShader
+glDisable
+glDrawArrays
+glEnable
+glEnableVertexAttribArray
+glGenBuffers
+glGetAttribLocation
+glGetProgramInfoLog
+glGetProgramiv
+glGetShaderInfoLog
+glGetShaderiv
+glGetUniformLocation
+glLinkProgram
+glShaderSource
+glUniform1f
+glUniform3f
+glUniformMatrix4fv
+glUseProgram
+glVertexAttribPointer
+glViewport
+ground
+haptics
+hasFocus
+hasNext
+hazards
+height
+help
+hit
+home
+house
+hud
+image
+images
+index
+intValue
+interpolation
+invalidate
+isEmpty
+isFinite
+iterator
+joint
+jumpLead
+kind
+knee
+lambda$new$0$com-bachke-goa-MainActivity$GameView
+lambda$new$1$com-bachke-goa-MainActivity$GameView
+lamp
+landAt
+landTime
+lane
+largestBounds
+lastFrame
+lastKind
+lastState
+lastTime
+launch
+lean
+leg
+length
+level
+line
+load
+mapusa.png
+margao.png
+market
+matrix
+max
+menu
+min
+minimumGap
+modelBackdrop
+motion
+move
+name
+nanoTime
+nativeOrder
+navigate
+next
+nextBoolean
+nextDouble
+nextInt
+nextRow
+nextSpawn
+night
+none
+normal
+obstacle
+obstacleSpeed
+obstacles
+offset
+offsetX
+offsetY
+oldgoa.png
+onApplyWindowInsets
+onAudioFocusChange
+onBackPressed
+onCreate
+onDestroy
+onDraw
+onDrawFrame
+onPause
+onResume
+onSurfaceChanged
+onSurfaceCreated
+onTouchEvent
+open
+openFd
+order
+ordinal
+outfit
+overlay
+ox
+oy
+oz
+page
+paint
+painter
+palm
+panel
+panjim.png
+part
+parts
+pause
+performClick
+performHapticFeedback
+pill
+planter
+play
+player
+point
+pool
+pos
+pose
+postFrameCallback
+pow
+precision mediump float;varying vec3 vNormal;varying vec3 vColor;varying float vDepth;uniform float uNight;uniform vec3 uFog;void main(){vec3 n=normalize(vNormal);float light=max(0.0,dot(n,normalize(vec3(-0.45,0.8,0.4))));float hemi=n.y*.5+.5;vec3 day=vColor*(.48+.42*light+.13*hemi);vec3 night=vColor*vec3(.48,.56,.75)+vColor*light*.3;vec3 c=mix(day,night,uNight);float fog=smoothstep(55.0,145.0,vDepth);gl_FragColor=vec4(mix(c,uFog,fog),1.0);}
+prefs
+previousDistance
+previousX
+previousY
+program
+progress
+put
+putBoolean
+putInt
+quad
+random
+rect
+recycle
+regular
+release
+remove
+removeFrameCallback
+renderDistance
+renderX
+renderY
+requestAudioFocus
+requestRender
+requiresBoost
+restore
+resume
+rig-matte.png
+rigs
+rod
+roof
+rotate
+route
+rowGap
+rows
+runner
+s
+sans-serif
+sans-serif-condensed
+save
+scale
+scene
+score
+scored
+set
+setAlpha
+setAudioAttributes
+setColor
+setContentDescription
+setContentType
+setContentView
+setEGLConfigChooser
+setEGLContextClientVersion
+setFocusable
+setMaxStreams
+setOnApplyWindowInsetsListener
+setOnAudioFocusChangeListener
+setPreserveEGLContextOnPause
+setRenderMode
+setRenderer
+setStrokeCap
+setStrokeWidth
+setStyle
+setSystemUiVisibility
+setText
+setTextAlign
+setTextSize
+setTypeface
+setUsage
+settings
+shader
+shadow
+signum
+sin
+size
+skin
+slideUntil
+sliding
+sound
+soundFocus
+sounds
+source
+spawn
+spawnCount
+spawning
+speed
+sqrt
+stage
+stageName
+start
+state
+steer
+step
+streetMode
+streetX
+suspend
+swipe
+tan
+tap
+target
+targetX
+text
+this$0
+time
+toDegrees
+toLowerCase
+toRadians
+toString
+toUpperCase
+toast
+toastUntil
+top
+touch
+tour
+tracking
+translate
+tri
+uCamera
+uFog
+uNight
+uOffset
+uTime
+ui
+unclip
+up
+used
+value
+valueOf
+values
+velocity
+vertex
+vertices
+vy
+wasOver
+who
+width
+wind
+world
+worldX
+worlds
+x
+y
+yaw
+z
+~~D8{"backend":"dex","compilation-mode":"debug","has-checksums":false,"min-api":26,"sha-1":"abaab469b5ebd4dd2bb91ba0ed6f45277faae4ca","version":"8.6.2-dev"}
+�
+•
+�
+�
+�

@@ -1,0 +1,6 @@
+[
+ {"model":"rig115k.glb","out":"rig115k-stills","views":["front","rear","rear34","face","gameplay"]},
+ {"model":"meshy.glb","out":"meshy-stills","views":["front","rear","rear34","face","left"]},
+ {"model":"rig115k.glb","out":"rear-Jog-115","anim":"Jog","view":"rear","frames":true,"fps":30,"cycles":3},
+ {"model":"rig115k.glb","out":"rear34-Run_Anime-115","anim":"Run_Anime","view":"rear34","frames":true,"fps":30,"cycles":4}
+]

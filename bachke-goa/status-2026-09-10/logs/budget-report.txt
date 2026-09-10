@@ -1,0 +1,22 @@
+============================================================ rig74k
+verts 43909 tris 74748 index type 5125 (5125=uint32 -> needs OES_element_index_uint on GLES2)
+bbox min [-0.793  0.    -0.32 ] max [0.822 1.899 0.217] height 1.899
+influences/vertex histogram (1..4): [39751, 4158, 0, 0]   max weight sum err 0.0
+joints actually influencing skin: 51 of 66
+uv range [0.    0.004] [1. 1.]   normals unit? True
+vertex buffer @52B/vert: 2.28 MB  index buffer: 0.9 MB
+animations 162 total output keyframes 226379 approx anim bytes 3.59 MB
+texture bytes (jpeg) 1.71 MB ; GPU-resident RGBA8 uncompressed 3x2048^2 = 50.331648 MB (before mips)
+bone matrices as mat4 uniforms: 264 vec4 -> EXCEEDS GLES2 minimum 128 vertex uniform vectors; dual-quat/3x4 packing or texture skinning or GLES3 UBO required
+bones actually used by skin: 51 -> as 3x4 packing 153 vec4
+============================================================ rig115k
+verts 67386 tris 114818 index type 5125 (5125=uint32 -> needs OES_element_index_uint on GLES2)
+bbox min [-0.87   0.    -0.203] max [0.866 1.898 0.201] height 1.898
+influences/vertex histogram (1..4): [61516, 5870, 0, 0]   max weight sum err 0.0
+joints actually influencing skin: 51 of 66
+uv range [0. 0.] [0.996 1.   ]   normals unit? True
+vertex buffer @52B/vert: 3.5 MB  index buffer: 1.38 MB
+animations 161 total output keyframes 225463 approx anim bytes 3.58 MB
+texture bytes (jpeg) 1.95 MB ; GPU-resident RGBA8 uncompressed 3x2048^2 = 50.331648 MB (before mips)
+bone matrices as mat4 uniforms: 264 vec4 -> EXCEEDS GLES2 minimum 128 vertex uniform vectors; dual-quat/3x4 packing or texture skinning or GLES3 UBO required
+bones actually used by skin: 51 -> as 3x4 packing 153 vec4

@@ -1,0 +1,5 @@
+[
+ {"model":"rig74k.glb","out":"rig74k-stills","views":["front","rear","rear34","front34","face","gameplay"]},
+ {"model":"meshy.glb","out":"meshy-stills","views":["front","rear","face"]},
+ {"model":"rig74k.glb","out":"rig74k-jog-poses","anim":"Jog","views":["rear","rear34"],"time":0.3}
+]

@@ -1,0 +1,48 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#222}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"./three/three.module.js"}}</script></head><body>
+<script type="module">
+import * as THREE from 'three';
+import {GLTFLoader} from './three/GLTFLoader.js';
+const q=new URLSearchParams(location.search);
+const W=+q.get('w')||720,H=+q.get('h')||960;
+const renderer=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});
+renderer.setSize(W,H);renderer.setPixelRatio(1);renderer.outputColorSpace=THREE.SRGBColorSpace;
+renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.0;
+renderer.shadowMap.enabled=true;document.body.appendChild(renderer.domElement);
+const scene=new THREE.Scene();scene.background=new THREE.Color(q.get('bg')||'#3a3f47');
+const cam=new THREE.PerspectiveCamera(35,W/H,0.05,100);
+const hemi=new THREE.HemisphereLight(0xdfe8ff,0x50402a,1.1);scene.add(hemi);
+const sun=new THREE.DirectionalLight(0xfff1dc,2.6);sun.position.set(-2.5,5,3);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);
+sun.shadow.camera.left=-2;sun.shadow.camera.right=2;sun.shadow.camera.top=3;sun.shadow.camera.bottom=-1;scene.add(sun);
+const fill=new THREE.DirectionalLight(0xbfd4ff,0.8);fill.position.set(3,2,-3);scene.add(fill);
+const ground=new THREE.Mesh(new THREE.CircleGeometry(3,64),new THREE.MeshStandardMaterial({color:0x4a4f57,roughness:1}));
+ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;scene.add(ground);
+const grid=new THREE.GridHelper(4,16,0x777777,0x555555);grid.position.y=0.001;scene.add(grid);
+window.READY=false;window.stats={};
+let mixer=null,model=null,action=null,root=null;
+new GLTFLoader().load(q.get('model'),gltf=>{
+  root=gltf.scene;
+  root.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=false;o.frustumCulled=false;if(o.material){o.material.side=THREE.FrontSide;}}});
+  scene.add(root);
+  // normalize: feet on ground, measure height
+  const box=new THREE.Box3().setFromObject(root);const size=box.getSize(new THREE.Vector3());
+  const scale=q.get('scale')?+q.get('scale'):1.75/size.y; root.scale.setScalar(scale);
+  const box2=new THREE.Box3().setFromObject(root);root.position.y-=box2.min.y;
+  window.stats={rawHeight:size.y,scale,bboxRaw:[size.x,size.y,size.z],anims:gltf.animations.map(a=>a.name)};
+  if(gltf.animations.length){mixer=new THREE.AnimationMixer(root);
+    const nm=q.get('anim');const clip=nm?gltf.animations.find(a=>a.name===nm):null;
+    if(clip){action=mixer.clipAction(clip);action.play();window.stats.clipDuration=clip.duration;}
+  }
+  window.setView=(v)=>{const t=new THREE.Vector3(0,0.95,0);
+    const d=+q.get('dist')||4.2, hy=+q.get('camy')||1.25;
+    const views={front:[0,hy,d],rear:[0,hy,-d],rear34:[-d*0.6,hy,-d*0.8],front34:[d*0.6,hy,d*0.8],left:[d,hy,0],right:[-d,hy,0],
+      gameplay:[0,2.3,-4.6],face:[0,1.55,1.2]};
+    const p=views[v]||views.front;cam.position.set(...p);
+    if(v==='face'){cam.lookAt(0,1.55,0);cam.fov=28;}else if(v==='gameplay'){cam.lookAt(0,0.9,1.5);cam.fov=55;}else{cam.lookAt(t);cam.fov=35;}
+    cam.updateProjectionMatrix();};
+  window.setView(q.get('view')||'front');
+  window.step=(dt)=>{if(mixer)mixer.update(dt);renderer.render(scene,cam);};
+  window.seek=(t)=>{if(action){action.time=t;mixer.update(0);}renderer.render(scene,cam);};
+  window.step(0);window.READY=true;
+},undefined,e=>{window.ERR=String(e);});
+</script></body></html>
