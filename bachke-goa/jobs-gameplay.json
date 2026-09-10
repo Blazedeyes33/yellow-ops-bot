@@ -1,0 +1,8 @@
+[
+ {"out":"panjim-day-current","q":{"route":"0","night":"0","backdrop":"0"}},
+ {"out":"panjim-day-backdrop","q":{"route":"0","night":"0","backdrop":"1"}},
+ {"out":"panjim-night-current","q":{"route":"0","night":"1","backdrop":"0"}},
+ {"out":"panjim-night-backdrop","q":{"route":"0","night":"1","backdrop":"1"}},
+ {"out":"margao-day-backdrop","q":{"route":"1","night":"0","backdrop":"1"}},
+ {"out":"calangute-day-backdrop","q":{"route":"4","night":"0","backdrop":"1"}}
+]

@@ -33,7 +33,9 @@ public final class SkinnedRenderer {
         public final BgmModel model;
         public final Skeleton skeleton;
         public final CharacterAnimator animator;
-        int vbo, ibo, tex;
+        int vbo, ibo;
+        /** One albedo per cosmetic skin: 0 = Everyday, 1 = Carnival. */
+        final int[] tex = new int[2];
         Instance(BgmModel m, float runClipSpeed) { model = m; skeleton = new Skeleton(m); animator = new CharacterAnimator(m, runClipSpeed); }
     }
 
@@ -52,7 +54,7 @@ public final class SkinnedRenderer {
         uNight = GLES30.glGetUniformLocation(program, "uNight"); uFog = GLES30.glGetUniformLocation(program, "uFog");
     }
 
-    public Instance upload(AssetManager assets, String modelAsset, String albedoAsset, float runClipSpeed) throws IOException {
+    public Instance upload(AssetManager assets, String modelAsset, String albedoAsset, String carnivalAlbedoAsset, float runClipSpeed) throws IOException {
         BgmModel m;
         try (InputStream in = assets.open(modelAsset)) { m = BgmModel.load(in); }
         Instance inst = new Instance(m, runClipSpeed);
@@ -61,22 +63,27 @@ public final class SkinnedRenderer {
         GLES30.glBufferData(GLES30.GL_ARRAY_BUFFER, m.vertexCount * BgmModel.VERTEX_STRIDE, m.vertices, GLES30.GL_STATIC_DRAW);
         GLES30.glBindBuffer(GLES30.GL_ELEMENT_ARRAY_BUFFER, inst.ibo);
         GLES30.glBufferData(GLES30.GL_ELEMENT_ARRAY_BUFFER, m.indexCount * 2, m.indices, GLES30.GL_STATIC_DRAW);
-        int[] t = new int[1]; GLES30.glGenTextures(1, t, 0); inst.tex = t[0];
-        GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, inst.tex);
+        GLES30.glGenTextures(2, inst.tex, 0);
+        loadTexture(assets, albedoAsset, inst.tex[0]);
+        loadTexture(assets, carnivalAlbedoAsset, inst.tex[1]);
+        return inst;
+    }
+
+    static void loadTexture(AssetManager assets, String asset, int id) throws IOException {
+        GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, id);
         Bitmap bmp;
-        try (InputStream in = assets.open(albedoAsset)) { bmp = BitmapFactory.decodeStream(in); }
-        if (bmp == null) throw new IOException("cannot decode " + albedoAsset);
+        try (InputStream in = assets.open(asset)) { bmp = BitmapFactory.decodeStream(in); }
+        if (bmp == null) throw new IOException("cannot decode " + asset);
         GLUtils.texImage2D(GLES30.GL_TEXTURE_2D, 0, bmp, 0); bmp.recycle();
         GLES30.glGenerateMipmap(GLES30.GL_TEXTURE_2D);
         GLES30.glTexParameteri(GLES30.GL_TEXTURE_2D, GLES30.GL_TEXTURE_MIN_FILTER, GLES30.GL_LINEAR_MIPMAP_LINEAR);
         GLES30.glTexParameteri(GLES30.GL_TEXTURE_2D, GLES30.GL_TEXTURE_MAG_FILTER, GLES30.GL_LINEAR);
         GLES30.glTexParameteri(GLES30.GL_TEXTURE_2D, GLES30.GL_TEXTURE_WRAP_S, GLES30.GL_REPEAT);
         GLES30.glTexParameteri(GLES30.GL_TEXTURE_2D, GLES30.GL_TEXTURE_WRAP_T, GLES30.GL_REPEAT);
-        return inst;
     }
 
     /** Draw the instance's current pose at world (x,y,z) facing +yaw with a small roll lean, scaled so its rest height is targetHeight. */
-    public void draw(Instance inst, float[] camera, float x, float y, float z, float yaw, float lean, float targetHeight, float night, float fr, float fg, float fb) {
+    public void draw(Instance inst, int skin, float[] camera, float x, float y, float z, float yaw, float lean, float targetHeight, float night, float fr, float fg, float fb) {
         inst.skeleton.evaluate(inst.animator.pose);
         float h = inst.model.bboxMax[1] - inst.model.bboxMin[1];
         float s = targetHeight / Math.max(0.01f, h);
@@ -91,7 +98,7 @@ public final class SkinnedRenderer {
         GLES30.glUniformMatrix4fv(uModel, 1, false, modelMatrix, 0);
         GLES30.glUniform4fv(uBones, inst.model.boneCount * 3, inst.skeleton.boneRows, 0);
         GLES30.glUniform1f(uNight, night); GLES30.glUniform3f(uFog, fr, fg, fb);
-        GLES30.glActiveTexture(GLES30.GL_TEXTURE0); GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, inst.tex); GLES30.glUniform1i(uAlbedo, 0);
+        GLES30.glActiveTexture(GLES30.GL_TEXTURE0); GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, inst.tex[Math.max(0, Math.min(1, skin))]); GLES30.glUniform1i(uAlbedo, 0);
         GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, inst.vbo);
         GLES30.glBindBuffer(GLES30.GL_ELEMENT_ARRAY_BUFFER, inst.ibo);
         int st = BgmModel.VERTEX_STRIDE;
