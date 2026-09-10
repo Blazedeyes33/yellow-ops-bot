@@ -120,10 +120,14 @@ public final class World3D {
 
     private static void house(Mesh3D mesh3D, double d, double d2, int i, int i2, int i3) {
         double d3 = ((i3 % 2) * 1.1d) + 4.5d;
+        mesh3D.wind = -3.0f;
         mesh3D.box(d, d3 / 2.0d, d2, 4.8d, d3, 7.8d, i);
+        mesh3D.wind = 0.0f;
         mesh3D.box(d, 0.36d, d2, 5.0d, 0.55d, 8.0d, 11240036);
         mesh3D.box(d, d3 - 0.17d, d2, 5.1d, 0.23d, 8.1d, CREAM);
+        mesh3D.wind = -2.0f;
         roof(mesh3D, d, d3, d2, 5.4d, 8.5d);
+        mesh3D.wind = 0.0f;
         double d4 = i2;
         double d5 = d - (2.43d * d4);
         for (int i4 = -1; i4 <= 1; i4++) {
@@ -260,36 +264,48 @@ public final class World3D {
     }
 
     private static void palm(Mesh3D mesh3D, double d, double d2, double d3) {
-        double d4 = d + 0.35d;
-        mesh3D.rod(d, 0.15d, d2, d4, d3, d2, 0.19d, 0.12d, 10255953);
-        int i = 0;
-        while (i < 6) {
-            double d5 = (i * 3.141592653589793d) / 3.0d;
+        // Curved segmented trunk
+        double lean = 0.35d;
+        int segs = 5;
+        double px = d, py = 0.15d;
+        for (int s = 0; s < segs; s++) {
+            double t0 = s / (double) segs, t1 = (s + 1) / (double) segs;
+            double x0 = d + lean * t0 * t0, x1 = d + lean * t1 * t1;
+            double y0 = 0.15d + (d3 - 0.15d) * t0, y1 = 0.15d + (d3 - 0.15d) * t1;
+            mesh3D.rod(x0, y0, d2, x1, y1, d2, 0.20d - 0.06d * t0, 0.20d - 0.06d * t1, s % 2 == 0 ? 10255953 : 9007437);
+            px = x1; py = y1;
+        }
+        double cx = px, cy = py;
+        // Coconuts
+        mesh3D.ellipsoid(cx + 0.12d, cy - 0.22d, d2 + 0.10d, 0.14d, 0.15d, 0.14d, 6894889);
+        mesh3D.ellipsoid(cx - 0.10d, cy - 0.26d, d2 - 0.08d, 0.13d, 0.14d, 0.13d, 5578775);
+        mesh3D.ellipsoid(cx + 0.02d, cy - 0.20d, d2 - 0.16d, 0.12d, 0.13d, 0.12d, 6894889);
+        // Eight leaf-shaped fronds: spine follows a droop curve; width swells then tapers to a point; alternating tones read as leaflets
+        int fronds = 8;
+        for (int i = 0; i < fronds; i++) {
+            double a = (i * 2.0d * Math.PI) / fronds + (i % 2) * 0.18d;
+            double len = 2.6d + 0.35d * ((i * 7) % 3);
+            double droop = 0.55d + 0.12d * ((i * 5) % 3);
+            int segsF = 6;
             mesh3D.wind = 1.0f;
-            int i2 = 0;
-            while (i2 < 4) {
-                double d6 = i2;
-                double d7 = d6 * 0.7d;
-                int i3 = i2 + 1;
-                double d8 = i3 * 0.7d;
-                double sin = (d3 + (Math.sin(d7) * 0.55d)) - ((d7 * d7) * 0.17d);
-                double sin2 = (d3 + (Math.sin(d8) * 0.55d)) - ((d8 * d8) * 0.17d);
-                double cos = d4 + (Math.cos(d5) * d7);
-                double sin3 = d2 + (Math.sin(d5) * d7);
-                double cos2 = d4 + (Math.cos(d5) * d8);
-                double sin4 = d2 + (Math.sin(d5) * d8);
-                double d9 = (1.0d - (d6 * 0.15d)) * 0.36d;
-                double sin5 = Math.sin(d5) * d9;
-                double d10 = (-Math.cos(d5)) * d9;
-                double d11 = sin5 * 0.75d;
-                double d12 = 0.75d * d10;
-                mesh3D.quad(cos - sin5, sin, sin3 - d10, cos2 - d11, sin2, sin4 - d12, cos2 + d11, sin2, sin4 + d12, cos + sin5, sin, sin3 + d10, i % 2 == 0 ? 3247207 : 5810789);
-                i = i;
-                i2 = i3;
+            for (int k = 0; k < segsF; k++) {
+                double u0 = k / (double) segsF, u1 = (k + 1) / (double) segsF;
+                double r0 = u0 * len, r1 = u1 * len;
+                double h0 = cy + 0.25d + Math.sin(u0 * 1.1d) * 0.9d - droop * r0 * r0 * 0.34d;
+                double h1 = cy + 0.25d + Math.sin(u1 * 1.1d) * 0.9d - droop * r1 * r1 * 0.34d;
+                double w0 = 0.62d * Math.sin(Math.PI * Math.min(1.0d, u0 * 1.15d)) + 0.04d;
+                double w1 = 0.62d * Math.sin(Math.PI * Math.min(1.0d, u1 * 1.15d)) + 0.04d;
+                if (k == segsF - 1) w1 = 0.02d;
+                double ca = Math.cos(a), sa = Math.sin(a);
+                double x0 = cx + ca * r0, z0 = d2 + sa * r0, x1 = cx + ca * r1, z1 = d2 + sa * r1;
+                double nx = -sa, nz = ca;
+                int col = (k % 2 == 0) ? (i % 2 == 0 ? 3247207 : 4166981) : (i % 2 == 0 ? 2591310 : 5810789);
+                mesh3D.quad(x0 - nx * w0, h0, z0 - nz * w0, x1 - nx * w1, h1, z1 - nz * w1, x1 + nx * w1, h1, z1 + nz * w1, x0 + nx * w0, h0, z0 + nz * w0, col);
+                // underside so fronds read from below/behind
+                mesh3D.quad(x0 + nx * w0, h0 - 0.02d, z0 + nz * w0, x1 + nx * w1, h1 - 0.02d, z1 + nz * w1, x1 - nx * w1, h1 - 0.02d, z1 - nz * w1, x0 - nx * w0, h0 - 0.02d, z0 - nz * w0, col - 0x101010);
             }
             mesh3D.wind = 0.0f;
-            i++;
         }
-        mesh3D.ellipsoid(d4, d3 - 0.1d, d2, 0.28d, 0.3d, 0.25d, 8942148);
+        mesh3D.ellipsoid(cx, cy + 0.05d, d2, 0.30d, 0.28d, 0.30d, 5578775);
     }
 }

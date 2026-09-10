@@ -3,6 +3,7 @@
 <script type="module">
 window.addEventListener('unhandledrejection',e=>{window.ERR=String(e.reason&&e.reason.stack||e.reason);});
 import * as THREE from 'three';
+import {GLTFLoader} from './three/GLTFLoader.js';
 // Faithful preview of the Android scene: same vertex streams (World3D/Stage3D), same camera matrix (Camera3D), same lighting formula as Shaders3D.
 const q=new URLSearchParams(location.search); const W=+q.get('w')||540,H=+q.get('h')||1200;
 const night=q.get('night')==='1'; const route=+q.get('route')||0; const backdrop=q.get('backdrop')!=='0';
@@ -38,5 +39,13 @@ if(backdrop){const names=['panjim','margao','mapusa','oldgoa','calangute']; cons
   const m=new THREE.Mesh(g,mk(+q.get('bfog')||0.55,80,150)); m.position.set(0,BH/2-1.0,+q.get('bz')||-135); m.frustumCulled=false; m.renderOrder=-10; scene.add(m);}
  if(mode==='wall'||mode==='both'){ for(const sx of [-1,1]){const g=new THREE.PlaneGeometry(220,11,1,1); const uv=g.attributes.uv; for(let i=0;i<uv.count;i++){uv.setX(i,uv.getX(i)*3.0); uv.setY(i,uv.getY(i)*0.55);} const m=new THREE.Mesh(g,mk(0.85,60,140)); m.position.set(sx*(+q.get('wx')||24),5.0,-60); m.rotation.y=sx>0?-Math.PI/2:Math.PI/2; m.frustumCulled=false; m.renderOrder=-9; scene.add(m);} }
 }
+// composite the skinned character (numpy re-skin of the runtime .bgm) at the runner position, 1.85 m tall, lit like SkinnedRenderer
+if(q.get('char')!=='0'){const g=await new GLTFLoader().loadAsync('models/'+(q.get('charModel')||'jojo-bgm-run.glb')); const root=g.scene; const box=new THREE.Box3().setFromObject(root); const sc=1.85/(box.max.y-box.min.y); root.scale.setScalar(sc);
+ root.traverse(o=>{if(o.isMesh){const tex=o.material.map; o.material=new THREE.ShaderMaterial({uniforms:{uAlbedo:{value:tex},uNight:{value:night?1:0},uFog:{value:new THREE.Vector3(...fog)}},
+  vertexShader:`varying vec2 vUv; varying vec3 vNormal; varying float vDepth; void main(){vec4 wp=modelMatrix*vec4(position,1.0); vNormal=mat3(modelMatrix)*normal; vUv=uv; vDepth=max(0.0,-wp.z); gl_Position=projectionMatrix*wp;}`,
+  fragmentShader:`precision mediump float; varying vec2 vUv; varying vec3 vNormal; varying float vDepth; uniform sampler2D uAlbedo; uniform float uNight; uniform vec3 uFog;
+   void main(){vec3 n=normalize(vNormal); vec3 L=normalize(vec3(-0.45,0.8,0.4)); float light=max(0.0,dot(n,L)); float hemi=n.y*.5+.5; float rim=pow(1.0-max(0.0,n.z),3.0)*0.12; vec3 albedo=texture2D(uAlbedo,vUv).rgb;
+    vec3 day=albedo*(.50+.46*light+.14*hemi)+rim; vec3 night=albedo*vec3(.48,.56,.78)+albedo*light*.32+rim*0.5; vec3 c=mix(day,night,uNight); float fog=smoothstep(55.0,145.0,vDepth); gl_FragColor=vec4(mix(c,uFog,fog),1.0);}`});}});
+ root.position.set(+state.renderX, +state.renderY - box.min.y*sc, 0); scene.add(root);}
 window.render=()=>renderer.render(scene,cam); window.render(); window.READY=true;
 </script></body></html>

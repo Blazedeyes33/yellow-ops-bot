@@ -16,7 +16,20 @@ public final class ExportWorld {
         }
         // a representative street scene: runner at t=25s with hazards
         RunnerCore core = new RunnerCore(); core.streetMode = true; core.start(4);
-        for (int i = 0; i < (int) (25 / RunnerCore.STEP); i++) core.advance(RunnerCore.STEP);
+        double snapshot = args.length > 1 ? Double.parseDouble(args[1]) : 25.0;
+        for (int i = 0; i < (int) (snapshot / RunnerCore.STEP) && core.state == GameCore.State.PLAYING; i++) {
+            // same look-ahead driver as CoreTests: steer to the far side of the nearest crossing cart
+            RunnerCore.Hazard threat = null;
+            for (RunnerCore.Hazard hz : core.hazards) if (hz.z > -1.0 && hz.z < 14.0 && (threat == null || hz.z < threat.z)) threat = hz;
+            if (threat != null) {
+                double eta = Math.max(0, threat.z / core.speed());
+                double px = threat.streetX + threat.velocity * eta;
+                double want = px > 0 ? Math.max(-3.25, px - 2.6) : Math.min(3.25, px + 2.6);
+                core.steer(want - core.targetX);
+            }
+            core.advance(RunnerCore.STEP);
+        }
+        if (core.state != GameCore.State.PLAYING) throw new IllegalStateException("driver died before snapshot");
         Stage3D stage = new Stage3D(); stage.skinnedCharacter = true;
         stage.frame(core, 0, 25.0, false);
         write(outDir + "/actors.f32", stage.actors);
